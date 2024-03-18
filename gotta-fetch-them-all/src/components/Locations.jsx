@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react';
+import { SelectedLocation } from './SelectedLocation';
 
 export const Locations = () => {
   const [data, setData] = useState(null);
+  const [clickedLocation, setClickedLocation] = useState({
+    url: null,
+    name: null,
+    clicked: false,
+  });
 
   useEffect(() => {
     async function fetchData() {
@@ -11,15 +17,34 @@ export const Locations = () => {
     }
     fetchData();
   }, []);
-
+  console.log(clickedLocation);
   return (
     <div>
       {data ? (
-        <ul>
-          {data.map((item, i) => (
-            <li key={i}>{item.name}</li>
-          ))}
-        </ul>
+        clickedLocation.clicked ? (
+          <SelectedLocation
+            clickedLocation={clickedLocation}
+            setClickedLocation={setClickedLocation}
+            click={true}
+          />
+        ) : (
+          <ul>
+            {data.map((item, i) => (
+              <li
+                key={i}
+                onClick={() => {
+                  setClickedLocation({
+                    url: item.url,
+                    name: item.name,
+                    clicked: true,
+                  });
+                }}
+              >
+                {item.name.split('-').join(' ')}
+              </li>
+            ))}
+          </ul>
+        )
       ) : (
         <p>Loading...</p>
       )}
