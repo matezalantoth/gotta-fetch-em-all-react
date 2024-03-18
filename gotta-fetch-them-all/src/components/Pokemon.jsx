@@ -11,8 +11,9 @@ export const Pokemon = (props) => {
     };
     fetchCurrentPokemon();
   }, []);
+
   return currentPokemon ? (
-    <div>
+    <div className=' text-white'>
       <img src={currentPokemon.sprites['front_default']}></img>
       <h2>{currentPokemon.name}</h2>
     </div>
