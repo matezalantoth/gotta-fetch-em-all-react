@@ -17,9 +17,16 @@ export const Locations = () => {
     }
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (!clickedLocation.clicked) {
+      document.querySelector('body').className =
+        'bg-locationsPage bg-no-repeat bg-center';
+    }
+  }, [clickedLocation]);
   console.log(clickedLocation);
   return (
-    <div>
+    <div className='inline-flex items-center self-center text-center'>
       {data ? (
         clickedLocation.clicked ? (
           <SelectedLocation
@@ -28,21 +35,32 @@ export const Locations = () => {
             click={true}
           />
         ) : (
-          <ul>
-            {data.map((item, i) => (
-              <li
-                key={i}
-                onClick={() => {
-                  setClickedLocation({
-                    url: item.url,
-                    name: item.name,
-                    clicked: true,
-                  });
-                }}
-              >
-                {item.name.split('-').join(' ')}
-              </li>
-            ))}
+          <ul className='relative'>
+            {data.map((item, i) => {
+              const nameSplitOnSpace = item.name.split('-');
+              const firstWord =
+                nameSplitOnSpace[0].split('')[0].toUpperCase() +
+                nameSplitOnSpace[0].slice(1, nameSplitOnSpace[0].length);
+              const secondWord =
+                nameSplitOnSpace[1].split('')[0].toUpperCase() +
+                nameSplitOnSpace[1].slice(1, nameSplitOnSpace[1].length);
+
+              return (
+                <li
+                  key={i}
+                  className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-1 w-96 relative opacity-80'
+                  onClick={() => {
+                    setClickedLocation({
+                      url: item.url,
+                      name: item.name,
+                      clicked: true,
+                    });
+                  }}
+                >
+                  {firstWord + ' ' + secondWord}
+                </li>
+              );
+            })}
           </ul>
         )
       ) : (

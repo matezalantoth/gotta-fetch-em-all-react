@@ -4,6 +4,7 @@ import { Pokemon } from './Pokemon';
 let currentEncounter;
 
 export const SelectedLocation = (props) => {
+  document.querySelector('body').className = 'bg-battlePage bg-no-repeat';
   const { clickedLocation, setClickedLocation, click } = props;
   const [locationData, setLocationData] = useState(null);
   useEffect(() => {
@@ -28,7 +29,7 @@ export const SelectedLocation = (props) => {
     }
 
     return pokemonEncounters.length > 0 ? (
-      <div>
+      <div className=' text-white'>
         <button
           onClick={() => {
             setClickedLocation({ ...clickedLocation, clicked: false });
@@ -39,7 +40,7 @@ export const SelectedLocation = (props) => {
         <Pokemon url={currentEncounter.pokemon.url} />
       </div>
     ) : (
-      <div>
+      <div className=' text-white'>
         <button
           onClick={() => {
             setClickedLocation({ ...clickedLocation, clicked: false });
@@ -51,5 +52,5 @@ export const SelectedLocation = (props) => {
       </div>
     );
   }
-  return <h2>Loading...</h2>;
+  return <h2 className=' text-white'>Loading...</h2>;
 };
