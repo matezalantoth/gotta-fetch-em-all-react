@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { SelectedLocation } from './SelectedLocation';
+import { usePokemons } from './usePokemons';
 
 export const Locations = () => {
   const [data, setData] = useState(null);
@@ -8,6 +9,8 @@ export const Locations = () => {
     name: null,
     clicked: false,
   });
+  const { pokemons } = usePokemons();
+  console.log('moving on');
 
   useEffect(() => {
     async function fetchData() {
@@ -29,6 +32,7 @@ export const Locations = () => {
       {data ? (
         clickedLocation.clicked ? (
           <SelectedLocation
+            pokemons={pokemons}
             clickedLocation={clickedLocation}
             setClickedLocation={setClickedLocation}
             click={true}

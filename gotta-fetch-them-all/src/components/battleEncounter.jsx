@@ -9,11 +9,10 @@ export const BattleEncounter = (props) => {
     setEnemyPokemon,
     setSelectedPokemon,
   } = props;
-  const [currentAttack, setCurrentAttack] = useState(null);
-  const [currentAttackURL, setCurrentAttackURL] = useState(null);
   const [playerTurn, setPlayerTurn] = useState(false);
   const [damageTaken, setDamageTaken] = useState(null);
   const [damageDealt, setDamageDealt] = useState(null);
+  const [battleBegun, setBattleBegun] = useState(false);
   const isPokemonDead = { playerPokemonDead: false, enemyPokemonDead: false };
 
   if (selectedPokemon && enemyPokemon) {
@@ -33,16 +32,16 @@ export const BattleEncounter = (props) => {
     );
   };
 
-  const handleAttack = () => {
-    if (enemyPokemon && currentAttack) {
-      const damageDone = calcDamage(selectedPokemon.dmg, enemyPokemon.def);
+  const handleAttack = (attack) => {
+    if (enemyPokemon && attack) {
+      console.log(attack.power);
+      const damageDone =
+        (calcDamage(selectedPokemon.dmg, enemyPokemon.def) + attack.power) / 2;
       setEnemyPokemon({ ...enemyPokemon, hp: enemyPokemon.hp - damageDone });
       setDamageDealt(damageDone);
-      document.getElementById(
-        'damageText',
-      ).innerText = `${selectedPokemon.name} has dealt ${damageDealt}DMG!`;
     }
   };
+  console.log(enemyPokemon.hp);
 
   const handleEnemyAttack = () => {
     if (enemyPokemon) {
@@ -53,30 +52,40 @@ export const BattleEncounter = (props) => {
       });
       setDamageTaken(damageDone);
       setPlayerTurn(true);
-      if (document.getElementById('damageText')) {
-        document.getElementById(
-          'damageText',
-        ).innerText = `Your pokemon was dealt ${damageTaken}DMG!`;
-      }
     }
 
     return 'Loading...';
   };
 
   useEffect(() => {
+    if (document.getElementById('damageText')) {
+      document.getElementById(
+        'damageText',
+      ).innerText = `Your pokemon was dealt ${damageTaken}DMG!`;
+    }
+
     if (document.getElementById('selectedPokemonImage')) {
       document
         .getElementById('selectedPokemonImage')
         .classList.add('animate-shake');
+
       setTimeout(() => {
-        document
-          .getElementById('selectedPokemonImage')
-          .classList.remove('animate-shake');
+        if (document.getElementById('selectedPokemonImage')) {
+          document
+            .getElementById('selectedPokemonImage')
+            .classList.remove('animate-shake');
+        }
       }, 2000);
     }
   }, [selectedPokemon]);
 
   useEffect(() => {
+    if (document.getElementById('damageText')) {
+      document.getElementById(
+        'damageText',
+      ).innerText = `${selectedPokemon.name} has dealt ${damageDealt}DMG!`;
+    }
+
     if (document.getElementById('enemyPokemonImage')) {
       document
         .getElementById('enemyPokemonImage')
@@ -90,7 +99,7 @@ export const BattleEncounter = (props) => {
     }
   }, [enemyPokemon]);
 
-  if (selectedPokemon && enemyPokemon) {
+  if (selectedPokemon && enemyPokemon && battleBegun) {
     return !isPokemonDead.playerPokemonDead &&
       !isPokemonDead.enemyPokemonDead ? (
       <div className='inline-flex pt-11'>
@@ -107,9 +116,6 @@ export const BattleEncounter = (props) => {
             <div>
               <Attacks
                 selectedPokemon={selectedPokemon}
-                currentAttackURL={currentAttackURL}
-                setCurrentAttackURL={setCurrentAttackURL}
-                setCurrentAttack={setCurrentAttack}
                 damageTaken={damageTaken}
                 damageDealt={damageDealt}
                 handleAttack={handleAttack}
@@ -152,6 +158,16 @@ export const BattleEncounter = (props) => {
           Return to the cities
         </button>
       </div>
+    );
+  } else {
+    return (
+      <button
+        onClick={() => {
+          setBattleBegun(true);
+        }}
+      >
+        Begin battle!
+      </button>
     );
   }
 };

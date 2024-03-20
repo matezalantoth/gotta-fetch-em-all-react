@@ -2,31 +2,16 @@ import { useState, useEffect } from 'react';
 import { BattleEncounter } from './battleEncounter';
 
 export const MyPokemons = (props) => {
-  const { url } = props;
+  const { url, pokemons } = props;
   const { setClickedLocation } = props;
-  const [pokemons, setPokemons] = useState([]);
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [enemyPokemon, setEnemyPokemon] = useState(null);
 
-  const usersPokemon = [
-    'https://pokeapi.co/api/v2/pokemon/bulbasaur',
-    'https://pokeapi.co/api/v2/pokemon/charizard',
-    'https://pokeapi.co/api/v2/pokemon/xerneas',
-  ];
-
   useEffect(() => {
-    const fetchPokemonsData = async () => {
-      const pokemonsFetched = usersPokemon.map(async (url) => {
-        const response = await fetch(url);
-        const data = await response.json();
-        return data;
-      });
-
-      setPokemons(await Promise.all(pokemonsFetched));
-    };
     const fetchEnemyPokemonData = async () => {
       const response = await fetch(url);
       const data = await response.json();
+
       setEnemyPokemon({
         name: data.name[0].toUpperCase() + data.name.slice(1, data.name.length),
         sprites: data.sprites,
@@ -37,7 +22,6 @@ export const MyPokemons = (props) => {
       });
     };
     fetchEnemyPokemonData();
-    fetchPokemonsData();
   }, []);
 
   return (
@@ -73,7 +57,7 @@ export const MyPokemons = (props) => {
                         pokemon.name[0].toUpperCase() +
                         pokemon.name.slice(1, pokemon.name.length),
                       sprites: pokemon.sprites,
-                      abilities: pokemon.abilities,
+                      abilities: pokemon.moveSet,
                       hp: pokemon.stats[0]['base_stat'],
                       dmg: pokemon.stats[1]['base_stat'],
                       def: pokemon.stats[2]['base_stat'],
