@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { BattleEncounter } from './battleEncounter';
 
-export const MyPokemons = () => {
+export const MyPokemons = (props) => {
+  const { url } = props;
   const [pokemons, setPokemons] = useState([]);
-  const [selectedPokemon, setSelectedPokemon] = useState();
+  const [selectedPokemon, setSelectedPokemon] = useState(null);
 
   const usersPokemon = [
     'https://pokeapi.co/api/v2/pokemon/bulbasaur',
@@ -22,16 +24,17 @@ export const MyPokemons = () => {
     };
     fetchPokemonsData();
   }, []);
-  console.log(pokemons);
+  if (selectedPokemon) {
+    console.log(selectedPokemon.stats[0]['base_stat']);
+  }
 
   return (
     <div className='relative top-72'>
       {selectedPokemon ? (
         <div className=' text-white font-bold py-2 px-4 rounded-full mb-1 relative opacity-80'>
-          {selectedPokemon.name}
-          <img
-            className='items-center '
-            src={selectedPokemon.sprites['front_default']}
+          <BattleEncounter
+            selectedPokemon={selectedPokemon}
+            enemyPokemonURL={url}
           />
         </div>
       ) : pokemons ? (

@@ -38,20 +38,20 @@ export const SelectedLocation = (props) => {
         <button
           onClick={() => {
             setClickedLocation({ ...clickedLocation, clicked: false });
-          }}>
+          }}
+        >
           Leave
         </button>
-
         <Pokemon url={currentEncounter.pokemon.url} />
-
-        <MyPokemons />
+        <MyPokemons url={currentEncounter.pokemon.url} />
       </div>
     ) : (
       <div className=' text-white'>
         <button
           onClick={() => {
             setClickedLocation({ ...clickedLocation, clicked: false });
-          }}>
+          }}
+        >
           Leave
         </button>
         <h2>There does not appear to be any pokemon here</h2>
