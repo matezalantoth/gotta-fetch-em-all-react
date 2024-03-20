@@ -6,6 +6,7 @@ export default {
       backgroundImage: {
         locationsPage: "url('./src/assets/main.jpg')",
         battlePage: "url('./src/assets/battle.jpg')",
+        pokemonLogo: "url('./src/assets/pokemon_logo.jpg')",
       },
     },
   },

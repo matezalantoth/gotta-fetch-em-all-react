@@ -25,16 +25,14 @@ export const MyPokemons = () => {
   console.log(pokemons);
 
   return (
-    <>
+    <div className='relative top-72'>
       {selectedPokemon ? (
-        <div>
-          <p className='text-white font-bold py-2 px-4 rounded-full mb-1 relative opacity-80'>
-            {selectedPokemon.name}
-            <img
-              className='items-center'
-              src={selectedPokemon.sprites['front_default']}
-            />
-          </p>
+        <div className=' text-white font-bold py-2 px-4 rounded-full mb-1 relative opacity-80'>
+          {selectedPokemon.name}
+          <img
+            className='items-center '
+            src={selectedPokemon.sprites['front_default']}
+          />
         </div>
       ) : pokemons ? (
         <div>
@@ -45,7 +43,8 @@ export const MyPokemons = () => {
                 <div
                   key={i}
                   onClick={() => setSelectedPokemon(pokemon)}
-                  className=' text-white font-bold mb-1 py-2  opacity-80 items-center justify-items-center'>
+                  className='transition ease-in delay-75 hover:scale-110 text-white font-bold mb-1 py-2  opacity-80 items-center justify-items-center'
+                >
                   <p>{pokemon.name}</p>
                   <img src={pokemon.sprites['front_default']} />
                 </div>
@@ -56,6 +55,6 @@ export const MyPokemons = () => {
       ) : (
         ''
       )}
-    </>
+    </div>
   );
 };

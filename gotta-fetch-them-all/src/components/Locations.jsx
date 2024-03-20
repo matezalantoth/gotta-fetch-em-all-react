@@ -36,7 +36,7 @@ export const Locations = () => {
           />
         ) : (
           <ul className='relative'>
-            <img src='../assets/pokemon_logo.png' />
+            <img src='../assets/pokemonLogo.jpg' alt='Picture not found' />
             {data.map((item, i) => {
               const nameSplitOnSpace = item.name.split('-');
               const firstWord =
@@ -56,7 +56,8 @@ export const Locations = () => {
                       name: item.name,
                       clicked: true,
                     });
-                  }}>
+                  }}
+                >
                   {firstWord + ' ' + secondWord}
                 </li>
               );

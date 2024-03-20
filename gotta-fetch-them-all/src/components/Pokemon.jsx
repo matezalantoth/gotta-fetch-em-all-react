@@ -13,8 +13,8 @@ export const Pokemon = (props) => {
   }, []);
 
   return currentPokemon ? (
-    <div className=' text-white font-bold mb-1 py-2  opacity-80 items-center justify-items-center '>
-      <img src={currentPokemon.sprites['front_default']} />
+    <div className='relative top-48'>
+      <img className='m-auto' src={currentPokemon.sprites['front_default']} />
       <p>{currentPokemon.name}</p>
     </div>
   ) : (
