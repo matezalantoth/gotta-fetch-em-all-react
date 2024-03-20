@@ -24,7 +24,6 @@ export const Locations = () => {
         'bg-locationsPage bg-no-repeat bg-center';
     }
   }, [clickedLocation]);
-  console.log(clickedLocation);
   return (
     <div className='inline-flex items-center self-center text-center'>
       {data ? (

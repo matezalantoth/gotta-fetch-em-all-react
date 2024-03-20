@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Pokemon } from './Pokemon';
 import { MyPokemons } from './MyPokemons';
 
 let currentEncounter;
@@ -41,10 +40,10 @@ export const SelectedLocation = (props) => {
           }}>
           Leave
         </button>
-
-        <Pokemon url={currentEncounter.pokemon.url} />
-
-        <MyPokemons />
+        <MyPokemons
+          url={currentEncounter.pokemon.url}
+          setClickedLocation={setClickedLocation}
+        />
       </div>
     ) : (
       <div className=' text-white'>
