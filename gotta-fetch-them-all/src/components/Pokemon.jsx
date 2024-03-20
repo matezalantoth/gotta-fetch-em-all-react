@@ -13,9 +13,9 @@ export const Pokemon = (props) => {
   }, []);
 
   return currentPokemon ? (
-    <div className=' text-white'>
-      <img src={currentPokemon.sprites['front_default']}></img>
-      <h2>{currentPokemon.name}</h2>
+    <div className=' text-white font-bold mb-1 py-2  opacity-80 items-center justify-items-center '>
+      <img src={currentPokemon.sprites['front_default']} />
+      <p>{currentPokemon.name}</p>
     </div>
   ) : (
     <h2>Loading...</h2>

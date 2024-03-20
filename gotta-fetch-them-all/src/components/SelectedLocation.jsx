@@ -5,7 +5,8 @@ import { MyPokemons } from './MyPokemons';
 let currentEncounter;
 
 export const SelectedLocation = (props) => {
-  document.querySelector('body').className = 'bg-battlePage bg-no-repeat';
+  document.querySelector('body').className =
+    'bg-battlePage bg-no-repeat  bg-cover w-full h-screen';
 
   const { clickedLocation, setClickedLocation, click } = props;
   const [locationData, setLocationData] = useState(null);
@@ -40,7 +41,9 @@ export const SelectedLocation = (props) => {
           }}>
           Leave
         </button>
+
         <Pokemon url={currentEncounter.pokemon.url} />
+
         <MyPokemons />
       </div>
     ) : (
