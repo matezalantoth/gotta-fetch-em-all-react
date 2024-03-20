@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Pokemon } from './Pokemon';
 import { MyPokemons } from './MyPokemons';
 
 let currentEncounter;
@@ -38,20 +37,20 @@ export const SelectedLocation = (props) => {
         <button
           onClick={() => {
             setClickedLocation({ ...clickedLocation, clicked: false });
-          }}
-        >
+          }}>
           Leave
         </button>
-        <Pokemon url={currentEncounter.pokemon.url} />
-        <MyPokemons url={currentEncounter.pokemon.url} />
+        <MyPokemons
+          url={currentEncounter.pokemon.url}
+          setClickedLocation={setClickedLocation}
+        />
       </div>
     ) : (
       <div className=' text-white'>
         <button
           onClick={() => {
             setClickedLocation({ ...clickedLocation, clicked: false });
-          }}
-        >
+          }}>
           Leave
         </button>
         <h2>There does not appear to be any pokemon here</h2>

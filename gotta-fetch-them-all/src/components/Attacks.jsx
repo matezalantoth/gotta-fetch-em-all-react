@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export const Attacks = (props) => {
   const {
@@ -16,6 +16,7 @@ export const Attacks = (props) => {
       const data = await response.json();
       setCurrentAttack(data);
     };
+
     fetchAttackData();
   }, [currentAttackURL]);
 
@@ -24,7 +25,6 @@ export const Attacks = (props) => {
       <h2>{`Your pokemon was dealt ${damageTaken}DMG!`}</h2>
       {selectedPokemon.abilities.map((ability, i) => {
         ability = ability.ability;
-
         return (
           <button
             className='mr-2 py-2 px-4 rounded-full bg-slate-600 '
@@ -33,8 +33,7 @@ export const Attacks = (props) => {
             onClick={() => {
               setCurrentAttackURL(ability.url);
               handleAttack();
-            }}
-          >
+            }}>
             {ability.name}
           </button>
         );

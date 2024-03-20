@@ -1,41 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Attacks } from './Attacks';
 
 export const BattleEncounter = (props) => {
-  const { selectedPokemon, enemyPokemonURL } = props;
-  const [enemyPokemon, setEnemyPokemon] = useState(null);
+  const { selectedPokemon, enemyPokemon, setClickedLocation } = props;
   const [currentAttack, setCurrentAttack] = useState(null);
   const [currentAttackURL, setCurrentAttackURL] = useState(null);
   const [playerTurn, setPlayerTurn] = useState(false);
   const [damageTaken, setDamageTaken] = useState(null);
   const isPokemonDead = { playerPokemonDead: false, enemyPokemonDead: false };
 
-  useEffect(() => {
-    const fetchEnemyPokemonData = async () => {
-      const response = await fetch(enemyPokemonURL);
-      const data = await response.json();
-      setEnemyPokemon(data);
-    };
-    fetchEnemyPokemonData();
-  }, []);
-
-  useEffect(() => {
-    if (isPokemonDead.playerPokemonDead) {
-      alert(`You're ${selectedPokemon.name} has fainted!`);
-    }
-    if (isPokemonDead.enemyPokemonDead) {
-      alert(`The ${enemyPokemon.name} has fainted!`);
-    }
-  }, [isPokemonDead]);
-
   if (selectedPokemon && enemyPokemon) {
     if (selectedPokemon.stats[0]['base_stat'] <= 0) {
       isPokemonDead.playerPokemonDead = true;
-      // document.getElementById('selectedPokemon').hidden = true;
     }
     if (enemyPokemon.stats[0]['base_stat'] <= 0) {
       isPokemonDead.enemyPokemonDead = true;
-      // document.getElementById('enemyPokemon').hidden = true;
     }
   }
 
@@ -43,7 +22,7 @@ export const BattleEncounter = (props) => {
     return Math.floor(
       ((((2 / 5 + 2) * B * 60) / D / 50 + 2) *
         Math.floor(Math.random() * (255 - 217) + 217)) /
-        255,
+        255
     );
   };
 
@@ -63,12 +42,12 @@ export const BattleEncounter = (props) => {
     if (enemyPokemon && currentAttack) {
       const damageDealt = calcDamage(
         damageStat(selectedPokemon),
-        defenseStat(enemyPokemon),
+        defenseStat(enemyPokemon)
       );
       enemyPokemon.stats[0]['base_stat'] =
         enemyPokemon.stats[0]['base_stat'] - damageDealt;
-      console.log(enemyPokemon.stats[0]['base_stat']);
-      alert(`You've dealt ${damageDealt}DMG!`);
+
+      // alert(`You've dealt ${damageDealt}DMG!`);
       setPlayerTurn(false);
     }
   };
@@ -77,7 +56,7 @@ export const BattleEncounter = (props) => {
     if (enemyPokemon) {
       const damageDealt = calcDamage(
         damageStat(enemyPokemon),
-        defenseStat(selectedPokemon),
+        defenseStat(selectedPokemon)
       );
 
       selectedPokemon.stats[0]['base_stat'] =
@@ -88,18 +67,18 @@ export const BattleEncounter = (props) => {
 
     return 'Loading...';
   };
+  console.log(enemyPokemon.sprites);
 
-  //   if (currentAttack) {
-  //   }
   if (selectedPokemon && enemyPokemon) {
-    if (!isPokemonDead.playerPokemonDead && !isPokemonDead.enemyPokemonDead) {
-      return (
+    return !isPokemonDead.playerPokemonDead &&
+      !isPokemonDead.enemyPokemonDead ? (
+      <div className='inline-flex pt-11'>
         <div id='selectedPokemon'>
           <div className='mt-5'>
             {selectedPokemon.name} {selectedPokemon.stats[0]['base_stat']}
             <img
-              className='items-center m-auto'
-              src={selectedPokemon.sprites['front_default']}
+              className='items-center m-auto scale-115  '
+              src={selectedPokemon.sprites['other']['showdown']['back_default']}
             />
           </div>{' '}
           {playerTurn ? (
@@ -119,7 +98,35 @@ export const BattleEncounter = (props) => {
             </div>
           )}
         </div>
-      );
-    }
+        <div className='relative mb-20'>
+          {enemyPokemon.name} {enemyPokemon.stats[0]['base_stat']}
+          <img
+            className='m-auto scale-115'
+            src={enemyPokemon.sprites['other']['showdown']['front_default']}
+          />
+        </div>
+      </div>
+    ) : isPokemonDead.playerPokemonDead ? (
+      <div>
+        <p>YOUR POKEMON IS DEAD CUNT</p>
+
+        <button
+          onClick={() => {
+            setClickedLocation({ url: null, name: null, clicked: false });
+          }}>
+          Return to the cities
+        </button>
+      </div>
+    ) : (
+      <div>
+        <p>YOU HAVE WON YIPPI WOULD U LIKE TO CATCH THE POKEMON ? smileyface</p>
+        <button
+          onClick={() => {
+            setClickedLocation({ url: null, name: null, clicked: false });
+          }}>
+          Return to the cities
+        </button>
+      </div>
+    );
   }
 };
