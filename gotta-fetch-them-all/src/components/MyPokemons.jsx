@@ -27,26 +27,32 @@ export const MyPokemons = () => {
   return (
     <>
       {selectedPokemon ? (
-        <p className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-1 w-96 relative opacity-80'>
-          {selectedPokemon.name}
-          <img
-            className='items-center'
-            src={selectedPokemon.sprites['front_default']}></img>
-        </p>
+        <div>
+          <p className='text-white font-bold py-2 px-4 rounded-full mb-1 relative opacity-80'>
+            {selectedPokemon.name}
+            <img
+              className='items-center'
+              src={selectedPokemon.sprites['front_default']}
+            />
+          </p>
+        </div>
       ) : pokemons ? (
-        pokemons.map((pokemon, i) => {
-          return (
-            <p
-              key={i}
-              onClick={() => setSelectedPokemon(pokemon)}
-              className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-1 w-96 relative opacity-80'>
-              {pokemon.name}
-              <img
-                className='items-center'
-                src={pokemon.sprites['front_default']}></img>
-            </p>
-          );
-        })
+        <div>
+          Please choose your pokemon
+          <div className=' items-center justify-items-center flex'>
+            {pokemons.map((pokemon, i) => {
+              return (
+                <div
+                  key={i}
+                  onClick={() => setSelectedPokemon(pokemon)}
+                  className=' text-white font-bold mb-1 py-2  opacity-80 items-center justify-items-center'>
+                  <p>{pokemon.name}</p>
+                  <img src={pokemon.sprites['front_default']} />
+                </div>
+              );
+            })}
+          </div>
+        </div>
       ) : (
         ''
       )}
