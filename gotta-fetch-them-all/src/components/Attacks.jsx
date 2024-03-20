@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 export const Attacks = (props) => {
   const {
@@ -8,6 +8,8 @@ export const Attacks = (props) => {
     setCurrentAttack,
     damageTaken,
     handleAttack,
+    playerTurn,
+    handleEnemyAttack,
   } = props;
 
   useEffect(() => {
@@ -19,25 +21,35 @@ export const Attacks = (props) => {
 
     fetchAttackData();
   }, [currentAttackURL]);
-
   return (
     <>
-      <h2>{`Your pokemon was dealt ${damageTaken}DMG!`}</h2>
-      {selectedPokemon.abilities.map((ability, i) => {
-        ability = ability.ability;
-        return (
-          <button
-            className='mr-2 py-2 px-4 rounded-full bg-slate-600 '
-            id={ability.url}
-            key={i}
-            onClick={() => {
-              setCurrentAttackURL(ability.url);
-              handleAttack();
-            }}>
-            {ability.name}
-          </button>
-        );
-      })}
+      <h2 id='damageText'>{`Your pokemon was dealt ${damageTaken}DMG!`}</h2>
+      {playerTurn ? (
+        selectedPokemon.abilities.map((ability, i) => {
+          ability = ability.ability;
+          return (
+            <button
+              className='mr-2 py-2 px-4 rounded-full bg-slate-600 disabled:bg-slate-400 '
+              id={ability.url}
+              key={i}
+              onClick={(event) => {
+                setCurrentAttackURL(ability.url);
+                handleAttack();
+                event.target.disabled = true;
+                setTimeout(() => {
+                  event.target.disabled = false;
+                }, 2000);
+              }}
+            >
+              {ability.name}
+            </button>
+          );
+        })
+      ) : (
+        <div>
+          <h2>{handleEnemyAttack()}</h2>
+        </div>
+      )}
     </>
   );
 };

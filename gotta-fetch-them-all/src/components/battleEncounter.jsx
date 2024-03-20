@@ -1,19 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Attacks } from './Attacks';
 
 export const BattleEncounter = (props) => {
-  const { selectedPokemon, enemyPokemon, setClickedLocation } = props;
+  const {
+    selectedPokemon,
+    enemyPokemon,
+    setClickedLocation,
+    setEnemyPokemon,
+    setSelectedPokemon,
+  } = props;
   const [currentAttack, setCurrentAttack] = useState(null);
   const [currentAttackURL, setCurrentAttackURL] = useState(null);
   const [playerTurn, setPlayerTurn] = useState(false);
   const [damageTaken, setDamageTaken] = useState(null);
+  const [damageDealt, setDamageDealt] = useState(null);
   const isPokemonDead = { playerPokemonDead: false, enemyPokemonDead: false };
 
   if (selectedPokemon && enemyPokemon) {
-    if (selectedPokemon.stats[0]['base_stat'] <= 0) {
+    if (selectedPokemon.hp <= 0) {
       isPokemonDead.playerPokemonDead = true;
     }
-    if (enemyPokemon.stats[0]['base_stat'] <= 0) {
+    if (enemyPokemon.hp <= 0) {
       isPokemonDead.enemyPokemonDead = true;
     }
   }
@@ -22,52 +29,66 @@ export const BattleEncounter = (props) => {
     return Math.floor(
       ((((2 / 5 + 2) * B * 60) / D / 50 + 2) *
         Math.floor(Math.random() * (255 - 217) + 217)) /
-        255
+        255,
     );
-  };
-
-  const damageStat = (pokemon) => {
-    return pokemon.stats.filter((stat) => stat.stat.name === 'attack')[0][
-      'base_stat'
-    ];
-  };
-
-  const defenseStat = (pokemon) => {
-    return pokemon.stats.filter((stat) => stat.stat.name === 'defense')[0][
-      'base_stat'
-    ];
   };
 
   const handleAttack = () => {
     if (enemyPokemon && currentAttack) {
-      const damageDealt = calcDamage(
-        damageStat(selectedPokemon),
-        defenseStat(enemyPokemon)
-      );
-      enemyPokemon.stats[0]['base_stat'] =
-        enemyPokemon.stats[0]['base_stat'] - damageDealt;
-
-      // alert(`You've dealt ${damageDealt}DMG!`);
-      setPlayerTurn(false);
+      const damageDone = calcDamage(selectedPokemon.dmg, enemyPokemon.def);
+      setEnemyPokemon({ ...enemyPokemon, hp: enemyPokemon.hp - damageDone });
+      setDamageDealt(damageDone);
+      document.getElementById(
+        'damageText',
+      ).innerText = `${selectedPokemon.name} has dealt ${damageDealt}DMG!`;
     }
   };
 
   const handleEnemyAttack = () => {
     if (enemyPokemon) {
-      const damageDealt = calcDamage(
-        damageStat(enemyPokemon),
-        defenseStat(selectedPokemon)
-      );
-
-      selectedPokemon.stats[0]['base_stat'] =
-        selectedPokemon.stats[0]['base_stat'] - damageDealt;
-      setDamageTaken(damageDealt);
+      const damageDone = calcDamage(enemyPokemon.dmg, selectedPokemon.def);
+      setSelectedPokemon({
+        ...selectedPokemon,
+        hp: selectedPokemon.hp - damageDone,
+      });
+      setDamageTaken(damageDone);
       setPlayerTurn(true);
+      if (document.getElementById('damageText')) {
+        document.getElementById(
+          'damageText',
+        ).innerText = `Your pokemon was dealt ${damageTaken}DMG!`;
+      }
     }
 
     return 'Loading...';
   };
-  console.log(enemyPokemon.sprites);
+
+  useEffect(() => {
+    if (document.getElementById('selectedPokemonImage')) {
+      document
+        .getElementById('selectedPokemonImage')
+        .classList.add('animate-shake');
+      setTimeout(() => {
+        document
+          .getElementById('selectedPokemonImage')
+          .classList.remove('animate-shake');
+      }, 2000);
+    }
+  }, [selectedPokemon]);
+
+  useEffect(() => {
+    if (document.getElementById('enemyPokemonImage')) {
+      document
+        .getElementById('enemyPokemonImage')
+        .classList.add('animate-shake');
+      setTimeout(() => {
+        setPlayerTurn(false);
+        document
+          .getElementById('enemyPokemonImage')
+          .classList.remove('animate-shake');
+      }, 2000);
+    }
+  }, [enemyPokemon]);
 
   if (selectedPokemon && enemyPokemon) {
     return !isPokemonDead.playerPokemonDead &&
@@ -75,13 +96,14 @@ export const BattleEncounter = (props) => {
       <div className='inline-flex pt-11'>
         <div id='selectedPokemon'>
           <div className='mt-5'>
-            {selectedPokemon.name} {selectedPokemon.stats[0]['base_stat']}
+            {selectedPokemon.name} {selectedPokemon.hp}
             <img
-              className='items-center m-auto scale-115  '
+              id='selectedPokemonImage'
+              className='items-center m-auto scale-115 '
               src={selectedPokemon.sprites['other']['showdown']['back_default']}
             />
-          </div>{' '}
-          {playerTurn ? (
+          </div>
+          {
             <div>
               <Attacks
                 selectedPokemon={selectedPokemon}
@@ -89,18 +111,19 @@ export const BattleEncounter = (props) => {
                 setCurrentAttackURL={setCurrentAttackURL}
                 setCurrentAttack={setCurrentAttack}
                 damageTaken={damageTaken}
+                damageDealt={damageDealt}
                 handleAttack={handleAttack}
+                playerTurn={playerTurn}
+                handleEnemyAttack={handleEnemyAttack}
               />
             </div>
-          ) : (
-            <div>
-              <h2>{handleEnemyAttack()}</h2>
-            </div>
-          )}
+          }
         </div>
+
         <div className='relative mb-20'>
-          {enemyPokemon.name} {enemyPokemon.stats[0]['base_stat']}
+          {enemyPokemon.name} {enemyPokemon.hp}
           <img
+            id='enemyPokemonImage'
             className='m-auto scale-115'
             src={enemyPokemon.sprites['other']['showdown']['front_default']}
           />
@@ -113,7 +136,8 @@ export const BattleEncounter = (props) => {
         <button
           onClick={() => {
             setClickedLocation({ url: null, name: null, clicked: false });
-          }}>
+          }}
+        >
           Return to the cities
         </button>
       </div>
@@ -123,7 +147,8 @@ export const BattleEncounter = (props) => {
         <button
           onClick={() => {
             setClickedLocation({ url: null, name: null, clicked: false });
-          }}>
+          }}
+        >
           Return to the cities
         </button>
       </div>

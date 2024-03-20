@@ -27,7 +27,14 @@ export const MyPokemons = (props) => {
     const fetchEnemyPokemonData = async () => {
       const response = await fetch(url);
       const data = await response.json();
-      setEnemyPokemon(data);
+      setEnemyPokemon({
+        name: data.name[0].toUpperCase() + data.name.slice(1, data.name.length),
+        sprites: data.sprites,
+        abilities: data.abilities,
+        hp: data.stats[0]['base_stat'],
+        dmg: data.stats[1]['base_stat'],
+        def: data.stats[2]['base_stat'],
+      });
     };
     fetchEnemyPokemonData();
     fetchPokemonsData();
@@ -41,6 +48,8 @@ export const MyPokemons = (props) => {
             enemyPokemon={enemyPokemon}
             selectedPokemon={selectedPokemon}
             setClickedLocation={setClickedLocation}
+            setEnemyPokemon={setEnemyPokemon}
+            setSelectedPokemon={setSelectedPokemon}
           />
         </div>
       ) : pokemons && enemyPokemon ? (
@@ -58,8 +67,20 @@ export const MyPokemons = (props) => {
               return (
                 <div
                   key={i}
-                  onClick={() => setSelectedPokemon(pokemon)}
-                  className='transition ease-in delay-75 hover:scale-110 text-white font-bold mb-1 py-2  items-center justify-items-center'>
+                  onClick={() => {
+                    setSelectedPokemon({
+                      name:
+                        pokemon.name[0].toUpperCase() +
+                        pokemon.name.slice(1, pokemon.name.length),
+                      sprites: pokemon.sprites,
+                      abilities: pokemon.abilities,
+                      hp: pokemon.stats[0]['base_stat'],
+                      dmg: pokemon.stats[1]['base_stat'],
+                      def: pokemon.stats[2]['base_stat'],
+                    });
+                  }}
+                  className='transition ease-in delay-75 hover:scale-110 text-white font-bold mb-1 py-2  items-center justify-items-center'
+                >
                   <p>{pokemon.name}</p>
                   <img src={pokemon.sprites['front_default']} />
                 </div>
