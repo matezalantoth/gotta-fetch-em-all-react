@@ -18,11 +18,25 @@ export const usePokemons = () => {
         const data = await response.json();
         return data;
       });
+      const tempPokemons = await Promise.all(pokemonsFetched);
+      const finalPokemons = tempPokemons.map(async (pokemon) => {
+        if (!pokemon.moveSet) {
+          pokemon.moveSet = [];
+          for (let i = 0; i < 5; i++) {
+            console.log('hi');
+            await getAttack(pokemon);
+          }
+        }
+        return pokemon;
+      });
 
-      setPokemons(await Promise.all(pokemonsFetched));
+      return await Promise.all(finalPokemons);
+    };
+    const handlePokemons = async () => {
+      setPokemons(await fetchPokemonsData());
     };
 
-    fetchPokemonsData();
+    handlePokemons();
   }, []);
 
   const getAttack = async (pokemon) => {
@@ -34,34 +48,20 @@ export const usePokemons = () => {
         usedURLs.push(potentialAttack.url);
         const response = await fetch(potentialAttack.url);
         const data = await response.json();
-        if (data.power) {
-          data.name = (
-            data.name.split('-')[0][0].toUpperCase() +
-            data.name.slice(1, data.name.length)
-          )
-            .split('-')
-            .join(' ');
-          pokemon.moveSet.push(data);
-          console.log(pokemon.moveSet);
-        } else {
-          getAttack();
-        }
+
+        data.name = (
+          data.name.split('-')[0][0].toUpperCase() +
+          data.name.slice(1, data.name.length)
+        )
+          .split('-')
+          .join(' ');
+        console.log(data);
+        pokemon.moveSet.push(data);
       } else {
         getAttack();
       }
     }
   };
-
-  useEffect(() => {
-    pokemons.map((pokemon) => {
-      if (!pokemon.moveSet) {
-        pokemon.moveSet = [];
-        for (let i = 0; i < 5; i++) {
-          getAttack(pokemon);
-        }
-      }
-    });
-  }, [pokemons]);
 
   return { pokemons };
 };
