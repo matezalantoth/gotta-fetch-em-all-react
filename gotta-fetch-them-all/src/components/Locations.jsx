@@ -10,6 +10,7 @@ export const Locations = () => {
     clicked: false,
   });
   const { pokemons, setPokemons } = usePokemons();
+  console.log(pokemons);
 
   useEffect(() => {
     async function fetchData() {
@@ -28,7 +29,7 @@ export const Locations = () => {
   }, [clickedLocation]);
   return (
     <div className='inline-flex items-center self-center text-center'>
-      {data ? (
+      {data && pokemons ? (
         clickedLocation.clicked ? (
           <SelectedLocation
             pokemons={pokemons}
@@ -59,7 +60,8 @@ export const Locations = () => {
                       name: item.name,
                       clicked: true,
                     });
-                  }}>
+                  }}
+                >
                   {firstWord + ' ' + secondWord}
                 </li>
               );
