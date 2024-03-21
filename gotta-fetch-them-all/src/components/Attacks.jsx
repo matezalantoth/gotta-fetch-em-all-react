@@ -6,6 +6,7 @@ export const Attacks = (props) => {
     playerTurn,
     handleEnemyAttack,
   } = props;
+
   return selectedPokemon.abilities ? (
     <>
       <h2 id='damageText'>{`Your pokemon was dealt ${damageTaken}DMG!`}</h2>
@@ -19,8 +20,8 @@ export const Attacks = (props) => {
               onClick={(event) => {
                 handleAttack(
                   selectedPokemon.abilities.find(
-                    (ability) => ability.name === event.target.innerText,
-                  ),
+                    (ability) => ability.name === event.target.innerText
+                  )
                 );
 
                 document.querySelectorAll('#attackButton').forEach((elem) => {
@@ -31,8 +32,7 @@ export const Attacks = (props) => {
                     elem.disabled = false;
                   });
                 }, 2000);
-              }}
-            >
+              }}>
               {ability.name}
             </button>
           );

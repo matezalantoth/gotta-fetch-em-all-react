@@ -19,10 +19,12 @@ export const usePokemons = () => {
         return data;
       });
       const tempPokemons = await Promise.all(pokemonsFetched);
+
       const promisedPokemons = tempPokemons.map(async (pokemon) => {
         pokemon.moveSet = [];
         for (let i = 0; i < 5; i++) {
           await getAttack(pokemon);
+
         }
         return pokemon;
       });
@@ -48,6 +50,7 @@ export const usePokemons = () => {
         const response = await fetch(potentialAttack.url);
         const data = await response.json();
 
+
         if (data.power) {
           console.log(data.power);
           data.name = (
@@ -60,6 +63,7 @@ export const usePokemons = () => {
         } else {
           getAttack();
         }
+
       } else {
         getAttack();
       }
