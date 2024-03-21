@@ -53,6 +53,7 @@ export const MyPokemons = (props) => {
                 <div
                   key={i}
                   onClick={() => {
+                    console.log(pokemon);
                     setSelectedPokemon({
                       name:
                         pokemon.name[0].toUpperCase() +
