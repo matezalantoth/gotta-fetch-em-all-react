@@ -43,7 +43,9 @@ export const MyPokemons = (props) => {
           }
         }
       };
-      getAttack(data);
+      for (let i = 0; i < 5; i++) {
+        getAttack(data);
+      }
 
       setEnemyPokemon({
         name: data.name[0].toUpperCase() + data.name.slice(1, data.name.length),
