@@ -23,7 +23,6 @@ export const usePokemons = () => {
         if (!pokemon.moveSet) {
           pokemon.moveSet = [];
           for (let i = 0; i < 5; i++) {
-            console.log('hi');
             await getAttack(pokemon);
           }
         }
@@ -55,7 +54,6 @@ export const usePokemons = () => {
         )
           .split('-')
           .join(' ');
-        console.log(data);
         pokemon.moveSet.push(data);
       } else {
         getAttack();
