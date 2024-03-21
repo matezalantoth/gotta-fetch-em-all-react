@@ -17,7 +17,6 @@ export const BattleEncounter = (props) => {
   const isPokemonDead = { playerPokemonDead: false, enemyPokemonDead: false };
 
   if (selectedPokemon && enemyPokemon) {
-    console.log(enemyPokemon);
     if (selectedPokemon.hp <= 0) {
       isPokemonDead.playerPokemonDead = true;
     }
@@ -36,10 +35,13 @@ export const BattleEncounter = (props) => {
 
   const handleAttack = (attack) => {
     if (enemyPokemon && attack) {
-      const damageDone = Math.floor(
-        calcDamage(selectedPokemon.dmg, enemyPokemon.def) +
-          (attack.power ? attack.power : 0) / 4,
-      );
+      const damageDone =
+        Math.floor(Math.random() * attack.accuracy) > 10
+          ? Math.floor(
+              calcDamage(selectedPokemon.dmg, enemyPokemon.def) +
+                attack.power / 4,
+            )
+          : 0;
       setEnemyPokemon({ ...enemyPokemon, hp: enemyPokemon.hp - damageDone });
       setDamageDealt(damageDone);
     }
@@ -51,12 +53,14 @@ export const BattleEncounter = (props) => {
         enemyPokemon.moveSet[
           Math.floor(Math.random() * enemyPokemon.moveSet.length)
         ];
-      const damageDone = Math.floor(
-        (calcDamage(enemyPokemon.dmg, selectedPokemon.def) +
-          (enemyAttack ? enemyAttack.power : 0)) /
-          4,
-      );
-
+      let damageDone =
+        Math.floor(Math.random() * enemyAttack.accuracy) > 10
+          ? Math.floor(
+              (calcDamage(enemyPokemon.dmg, selectedPokemon.def) +
+                enemyAttack.power) /
+                4,
+            )
+          : 0;
       setSelectedPokemon({
         ...selectedPokemon,
         hp: selectedPokemon.hp - damageDone,
