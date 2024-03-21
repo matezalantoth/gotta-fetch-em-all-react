@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { BattleEncounter } from './battleEncounter';
 
 export const MyPokemons = (props) => {
-  const { url, pokemons } = props;
+  const { url, pokemons, setPokemons } = props;
   const { setClickedLocation } = props;
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [enemyPokemon, setEnemyPokemon] = useState(null);
@@ -29,6 +29,7 @@ export const MyPokemons = (props) => {
       {selectedPokemon ? (
         <div className=' text-black font-bold py-2 px-4 rounded-full mb-1 relative '>
           <BattleEncounter
+            setPokemons={setPokemons}
             enemyPokemon={enemyPokemon}
             selectedPokemon={selectedPokemon}
             setClickedLocation={setClickedLocation}
@@ -64,8 +65,7 @@ export const MyPokemons = (props) => {
                       def: pokemon.stats[2]['base_stat'],
                     });
                   }}
-                  className='transition ease-in delay-75 hover:scale-110 text-black font-bold mb-1 py-2  items-center justify-items-center'
-                >
+                  className='transition ease-in delay-75 hover:scale-110 text-black font-bold mb-1 py-2  items-center justify-items-center'>
                   <p>{pokemon.name}</p>
                   <img src={pokemon.sprites['front_default']} />
                 </div>

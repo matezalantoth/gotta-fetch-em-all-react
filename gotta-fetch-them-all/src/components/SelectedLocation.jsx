@@ -7,7 +7,8 @@ export const SelectedLocation = (props) => {
   document.querySelector('body').className =
     'bg-battlePage bg-no-repeat  bg-cover w-full h-screen';
 
-  const { pokemons, clickedLocation, setClickedLocation, click } = props;
+  const { pokemons, clickedLocation, setClickedLocation, click, setPokemons } =
+    props;
   const [locationData, setLocationData] = useState(null);
 
   useEffect(() => {
@@ -37,11 +38,11 @@ export const SelectedLocation = (props) => {
         <button
           onClick={() => {
             setClickedLocation({ ...clickedLocation, clicked: false });
-          }}
-        >
+          }}>
           Leave
         </button>
         <MyPokemons
+          setPokemons={setPokemons}
           pokemons={pokemons}
           url={currentEncounter.pokemon.url}
           setClickedLocation={setClickedLocation}
@@ -52,8 +53,7 @@ export const SelectedLocation = (props) => {
         <button
           onClick={() => {
             setClickedLocation({ ...clickedLocation, clicked: false });
-          }}
-        >
+          }}>
           Leave
         </button>
         <h2>There does not appear to be any pokemon here</h2>

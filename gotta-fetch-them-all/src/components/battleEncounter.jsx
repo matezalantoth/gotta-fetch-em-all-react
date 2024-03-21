@@ -3,6 +3,8 @@ import { Attacks } from './Attacks';
 
 export const BattleEncounter = (props) => {
   const {
+    pokemons,
+    setPokemons,
     selectedPokemon,
     enemyPokemon,
     setClickedLocation,
@@ -28,20 +30,18 @@ export const BattleEncounter = (props) => {
     return Math.floor(
       ((((2 / 5 + 2) * B * 60) / D / 50 + 2) *
         Math.floor(Math.random() * (255 - 217) + 217)) /
-        255,
+        255
     );
   };
 
   const handleAttack = (attack) => {
     if (enemyPokemon && attack) {
-      console.log(attack.power);
       const damageDone =
         (calcDamage(selectedPokemon.dmg, enemyPokemon.def) + attack.power) / 2;
       setEnemyPokemon({ ...enemyPokemon, hp: enemyPokemon.hp - damageDone });
       setDamageDealt(damageDone);
     }
   };
-  console.log(enemyPokemon.hp);
 
   const handleEnemyAttack = () => {
     if (enemyPokemon) {
@@ -60,11 +60,10 @@ export const BattleEncounter = (props) => {
   useEffect(() => {
     if (document.getElementById('damageText')) {
       document.getElementById(
-        'damageText',
+        'damageText'
       ).innerText = `${enemyPokemon.name} dealt ${damageTaken}DMG!`;
-      console.log(document.getElementById('damageTakenIndicator'));
+
       document.getElementById('damageTakenIndicator').hidden = false;
-      console.log(document.getElementById('damageTakenIndicator'));
     }
 
     if (document.getElementById('selectedPokemonImage')) {
@@ -73,7 +72,6 @@ export const BattleEncounter = (props) => {
         .classList.add('animate-shake');
 
       setTimeout(() => {
-        console.log(document.getElementById('damageTakenIndicator').hidden);
         document.getElementById('damageTakenIndicator').hidden = true;
         if (document.getElementById('selectedPokemonImage')) {
           document
@@ -87,7 +85,7 @@ export const BattleEncounter = (props) => {
   useEffect(() => {
     if (document.getElementById('damageText')) {
       document.getElementById(
-        'damageText',
+        'damageText'
       ).innerText = `${selectedPokemon.name} has dealt ${damageDealt}DMG!`;
       document.getElementById('damageDealtIndicator').hidden = false;
     }
@@ -109,88 +107,88 @@ export const BattleEncounter = (props) => {
   if (selectedPokemon && enemyPokemon && battleBegun) {
     return !isPokemonDead.playerPokemonDead &&
       !isPokemonDead.enemyPokemonDead ? (
-      <div className='inline-flex pt-11'>
-        <div id='selectedPokemon'>
-          <div className='mt-5'>
-            {selectedPokemon.name}{' '}
+      <div>
+        <div className='inline-flex pt-11'>
+          <div id='selectedPokemon'>
+            <div className='mt-5'>
+              {selectedPokemon.name}{' '}
+              <div className='inline-flex'>
+                <p
+                  className={
+                    (selectedPokemon.hp > 60
+                      ? 'text-green-600'
+                      : selectedPokemon.hp > 30
+                      ? 'text-yellow-300'
+                      : 'text-red-600') +
+                    ' bg-slate-800 rounded-xl w-10 relative m-auto'
+                  }>
+                  {selectedPokemon.hp}
+                </p>
+                <p
+                  id='damageTakenIndicator'
+                  className={
+                    (damageTaken > 35 ? 'text-red-900' : 'text-yellow-300') +
+                    ' ml-12 fixed animate-shake'
+                  }
+                  hidden>
+                  -{damageTaken}
+                </p>
+              </div>
+              <img
+                id='selectedPokemonImage'
+                className='items-center m-auto scale-115 '
+                src={
+                  selectedPokemon.sprites['other']['showdown']['back_default']
+                }
+              />
+            </div>
+            {
+              <div>
+                <Attacks
+                  selectedPokemon={selectedPokemon}
+                  damageTaken={damageTaken}
+                  damageDealt={damageDealt}
+                  handleAttack={handleAttack}
+                  playerTurn={playerTurn}
+                  handleEnemyAttack={handleEnemyAttack}
+                />
+              </div>
+            }
+          </div>
+
+          <div className='text-black relative mb-20'>
+            {enemyPokemon.name}{' '}
             <div className='inline-flex'>
               <p
                 className={
-                  (selectedPokemon.hp > 60
+                  (enemyPokemon.hp > 60
                     ? 'text-green-600'
-                    : selectedPokemon.hp > 30
+                    : enemyPokemon.hp > 30
                     ? 'text-yellow-300'
                     : 'text-red-600') +
                   ' bg-slate-800 rounded-xl w-10 relative m-auto'
-                }
-              >
-                {selectedPokemon.hp}
+                }>
+                {enemyPokemon.hp}
               </p>
               <p
-                id='damageTakenIndicator'
+                id='damageDealtIndicator'
                 className={
-                  (damageTaken > 35 ? 'text-red-900' : 'text-yellow-300') +
-                  ' ml-12 fixed animate-shake'
+                  (damageDealt > 35
+                    ? 'text-red-900'
+                    : damageDealt > 15
+                    ? 'text-yellow-300'
+                    : 'text-green-600') + ' ml-12 animate-shake fixed'
                 }
-                hidden
-              >
-                -{damageTaken}
+                hidden>
+                -{damageDealt}
               </p>
             </div>
             <img
-              id='selectedPokemonImage'
-              className='items-center m-auto scale-115 '
-              src={selectedPokemon.sprites['other']['showdown']['back_default']}
+              id='enemyPokemonImage'
+              className='m-auto scale-115'
+              src={enemyPokemon.sprites['other']['showdown']['front_default']}
             />
           </div>
-          {
-            <div>
-              <Attacks
-                selectedPokemon={selectedPokemon}
-                damageTaken={damageTaken}
-                damageDealt={damageDealt}
-                handleAttack={handleAttack}
-                playerTurn={playerTurn}
-                handleEnemyAttack={handleEnemyAttack}
-              />
-            </div>
-          }
-        </div>
-
-        <div className='text-black relative mb-20'>
-          {enemyPokemon.name}{' '}
-          <div className='inline-flex'>
-            <p
-              className={
-                (enemyPokemon.hp > 60
-                  ? 'text-green-600'
-                  : enemyPokemon.hp > 30
-                  ? 'text-yellow-300'
-                  : 'text-red-600') +
-                ' bg-slate-800 rounded-xl w-10 relative m-auto'
-              }
-            >
-              {enemyPokemon.hp}
-            </p>
-            <p
-              id='damageDealtIndicator'
-              className={
-                (damageDealt > 35
-                  ? 'text-red-900'
-                  : damageDealt > 15
-                  ? 'text-yellow-300'
-                  : 'text-green-600') + ' ml-12 animate-shake fixed'
-              }
-              hidden
-            >
-              -{damageDealt}
-            </p>
-          </div>
-          <img
-            id='enemyPokemonImage'
-            className='m-auto scale-115'
-            src={enemyPokemon.sprites['other']['showdown']['front_default']}
-          />
         </div>
       </div>
     ) : isPokemonDead.playerPokemonDead ? (
@@ -200,8 +198,7 @@ export const BattleEncounter = (props) => {
         <button
           onClick={() => {
             setClickedLocation({ url: null, name: null, clicked: false });
-          }}
-        >
+          }}>
           Return to the cities
         </button>
       </div>
@@ -210,9 +207,14 @@ export const BattleEncounter = (props) => {
         <p>YOU HAVE WON YIPPI WOULD U LIKE TO CATCH THE POKEMON ? smileyface</p>
         <button
           onClick={() => {
+            setPokemons(...pokemons, enemyPokemon);
+          }}>
+          Catch the defated pokemon
+        </button>
+        <button
+          onClick={() => {
             setClickedLocation({ url: null, name: null, clicked: false });
-          }}
-        >
+          }}>
           Return to the cities
         </button>
       </div>
@@ -222,8 +224,7 @@ export const BattleEncounter = (props) => {
       <button
         onClick={() => {
           setBattleBegun(true);
-        }}
-      >
+        }}>
         Begin battle!
       </button>
     );
