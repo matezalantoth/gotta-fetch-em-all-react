@@ -35,7 +35,12 @@ export const usePokemons = () => {
         const response = await fetch(potentialAttack.url);
         const data = await response.json();
         if (data.power) {
-          console.log(data);
+          data.name = (
+            data.name.split('-')[0][0].toUpperCase() +
+            data.name.slice(1, data.name.length)
+          )
+            .split('-')
+            .join(' ');
           pokemon.moveSet.push(data);
           console.log(pokemon.moveSet);
         } else {

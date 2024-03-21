@@ -6,7 +6,6 @@ export const Attacks = (props) => {
     playerTurn,
     handleEnemyAttack,
   } = props;
-  console.log(selectedPokemon.abilities);
   return selectedPokemon.abilities ? (
     <>
       <h2 id='damageText'>{`Your pokemon was dealt ${damageTaken}DMG!`}</h2>
@@ -14,7 +13,7 @@ export const Attacks = (props) => {
         selectedPokemon.abilities.map((ability, i) => {
           return (
             <button
-              className='mr-2 py-2 px-4 rounded-full bg-slate-600 disabled:bg-slate-400 '
+              className='mr-2 py-2 px-4 rounded-full bg-white disabled:bg-slate-400 hover:bg-slate-400 '
               id='attackButton'
               key={i}
               onClick={(event) => {

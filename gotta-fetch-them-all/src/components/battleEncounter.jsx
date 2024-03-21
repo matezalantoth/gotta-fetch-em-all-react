@@ -61,7 +61,10 @@ export const BattleEncounter = (props) => {
     if (document.getElementById('damageText')) {
       document.getElementById(
         'damageText',
-      ).innerText = `Your pokemon was dealt ${damageTaken}DMG!`;
+      ).innerText = `${enemyPokemon.name} dealt ${damageTaken}DMG!`;
+      console.log(document.getElementById('damageTakenIndicator'));
+      document.getElementById('damageTakenIndicator').hidden = false;
+      console.log(document.getElementById('damageTakenIndicator'));
     }
 
     if (document.getElementById('selectedPokemonImage')) {
@@ -70,6 +73,8 @@ export const BattleEncounter = (props) => {
         .classList.add('animate-shake');
 
       setTimeout(() => {
+        console.log(document.getElementById('damageTakenIndicator').hidden);
+        document.getElementById('damageTakenIndicator').hidden = true;
         if (document.getElementById('selectedPokemonImage')) {
           document
             .getElementById('selectedPokemonImage')
@@ -84,6 +89,7 @@ export const BattleEncounter = (props) => {
       document.getElementById(
         'damageText',
       ).innerText = `${selectedPokemon.name} has dealt ${damageDealt}DMG!`;
+      document.getElementById('damageDealtIndicator').hidden = false;
     }
 
     if (document.getElementById('enemyPokemonImage')) {
@@ -91,6 +97,7 @@ export const BattleEncounter = (props) => {
         .getElementById('enemyPokemonImage')
         .classList.add('animate-shake');
       setTimeout(() => {
+        document.getElementById('damageDealtIndicator').hidden = true;
         setPlayerTurn(false);
         document
           .getElementById('enemyPokemonImage')
@@ -105,7 +112,31 @@ export const BattleEncounter = (props) => {
       <div className='inline-flex pt-11'>
         <div id='selectedPokemon'>
           <div className='mt-5'>
-            {selectedPokemon.name} {selectedPokemon.hp}
+            {selectedPokemon.name}{' '}
+            <div className='inline-flex'>
+              <p
+                className={
+                  (selectedPokemon.hp > 60
+                    ? 'text-green-600'
+                    : selectedPokemon.hp > 30
+                    ? 'text-yellow-300'
+                    : 'text-red-600') +
+                  ' bg-slate-800 rounded-xl w-10 relative m-auto'
+                }
+              >
+                {selectedPokemon.hp}
+              </p>
+              <p
+                id='damageTakenIndicator'
+                className={
+                  (damageTaken > 35 ? 'text-red-900' : 'text-yellow-300') +
+                  ' ml-12 fixed animate-shake'
+                }
+                hidden
+              >
+                -{damageTaken}
+              </p>
+            </div>
             <img
               id='selectedPokemonImage'
               className='items-center m-auto scale-115 '
@@ -126,8 +157,35 @@ export const BattleEncounter = (props) => {
           }
         </div>
 
-        <div className='relative mb-20'>
-          {enemyPokemon.name} {enemyPokemon.hp}
+        <div className='text-black relative mb-20'>
+          {enemyPokemon.name}{' '}
+          <div className='inline-flex'>
+            <p
+              className={
+                (enemyPokemon.hp > 60
+                  ? 'text-green-600'
+                  : enemyPokemon.hp > 30
+                  ? 'text-yellow-300'
+                  : 'text-red-600') +
+                ' bg-slate-800 rounded-xl w-10 relative m-auto'
+              }
+            >
+              {enemyPokemon.hp}
+            </p>
+            <p
+              id='damageDealtIndicator'
+              className={
+                (damageDealt > 35
+                  ? 'text-red-900'
+                  : damageDealt > 15
+                  ? 'text-yellow-300'
+                  : 'text-green-600') + ' ml-12 animate-shake fixed'
+              }
+              hidden
+            >
+              -{damageDealt}
+            </p>
+          </div>
           <img
             id='enemyPokemonImage'
             className='m-auto scale-115'

@@ -10,7 +10,6 @@ export const Locations = () => {
     clicked: false,
   });
   const { pokemons } = usePokemons();
-  console.log('moving on');
 
   useEffect(() => {
     async function fetchData() {
