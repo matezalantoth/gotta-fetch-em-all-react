@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { BattleEncounter } from './battleEncounter';
+import { MyPokemonsRenderer } from './MyPokemonsRenderer';
 
 export const MyPokemons = (props) => {
-  const { url, pokemons, setPokemons } = props;
-  const { setClickedLocation } = props;
+  const { url, pokemons, setPokemons, setClickedLocation } = props;
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [enemyPokemon, setEnemyPokemon] = useState(null);
   const usedURLs = [];
@@ -58,7 +58,7 @@ export const MyPokemons = (props) => {
   }, []);
 
   return (
-    <div className='relative top-72'>
+    <div className='relative top-72 text-center'>
       {selectedPokemon ? (
         <div className=' text-black font-bold py-2 px-4 rounded-full mb-1 relative '>
           <BattleEncounter
@@ -72,46 +72,11 @@ export const MyPokemons = (props) => {
           />
         </div>
       ) : pokemons && enemyPokemon ? (
-        <div>
-          <div className='relative mb-20'>
-            <img
-              className='m-auto'
-              src={enemyPokemon.sprites['front_default']}
-            />
-            <p>{enemyPokemon.name}</p>
-          </div>
-          Please choose your pokemon
-          <div className=' items-center justify-items-center flex'>
-            {pokemons.map((pokemon, i) => {
-              return (
-                <div
-                  key={i}
-                  onClick={() => {
-                    setSelectedPokemon({
-                      name:
-                        pokemon.name[0].toUpperCase() +
-                        pokemon.name.slice(1, pokemon.name.length),
-                      sprites: pokemon.sprites,
-                      abilities: pokemon.moveSet,
-                      hp: pokemon.uneditedHP
-                        ? pokemon.uneditedHP
-                        : pokemon.stats[0]['base_stat'],
-                      dmg: pokemon.dmg
-                        ? pokemon.dmg
-                        : pokemon.stats[1]['base_stat'],
-                      def: pokemon.def
-                        ? pokemon.def
-                        : pokemon.stats[2]['base_stat'],
-                    });
-                  }}
-                  className='transition ease-in delay-75 hover:scale-110 text-black font-bold mb-1 py-2  items-center justify-items-center'>
-                  <p>{pokemon.name}</p>
-                  <img src={pokemon.sprites['front_default']} />
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        <MyPokemonsRenderer
+          setSelectedPokemon={setSelectedPokemon}
+          pokemons={pokemons}
+          enemyPokemon={enemyPokemon}
+        />
       ) : (
         ''
       )}
