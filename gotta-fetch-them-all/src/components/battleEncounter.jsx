@@ -136,6 +136,8 @@ export const BattleEncounter = (props) => {
         handleAttack={handleAttack}
         playerTurn={playerTurn}
         handleEnemyAttack={handleEnemyAttack}
+        enemyPokemon={enemyPokemon}
+        damageDealt={damageDealt}
       />
     ) : (
       <EndScreenRenderer
