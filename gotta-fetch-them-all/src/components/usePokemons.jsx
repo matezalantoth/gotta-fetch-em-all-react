@@ -19,20 +19,23 @@ export const usePokemons = () => {
         return data;
       });
       const tempPokemons = await Promise.all(pokemonsFetched);
-      const finalPokemons = tempPokemons.map(async (pokemon) => {
-        if (!pokemon.moveSet) {
-          pokemon.moveSet = [];
-          for (let i = 0; i < 5; i++) {
-            await getAttack(pokemon);
-          }
+
+      const promisedPokemons = tempPokemons.map(async (pokemon) => {
+        pokemon.moveSet = [];
+        for (let i = 0; i < 5; i++) {
+          await getAttack(pokemon);
+
         }
         return pokemon;
       });
-
+      const finalPokemons = await Promise.all(promisedPokemons);
+      console.log('done');
+      console.log(finalPokemons);
       return await Promise.all(finalPokemons);
     };
     const handlePokemons = async () => {
       setPokemons(await fetchPokemonsData());
+      console.log('set');
     };
 
     handlePokemons();
@@ -41,20 +44,26 @@ export const usePokemons = () => {
   const getAttack = async (pokemon) => {
     if (pokemon) {
       const potentialAttack =
-        pokemon.moves[Math.floor(Math.random() * pokemon.abilities.length)]
-          .move;
+        pokemon.moves[Math.floor(Math.random() * pokemon.moves.length)].move;
       if (!usedURLs.includes(potentialAttack.url)) {
         usedURLs.push(potentialAttack.url);
         const response = await fetch(potentialAttack.url);
         const data = await response.json();
 
-        data.name = (
-          data.name.split('-')[0][0].toUpperCase() +
-          data.name.slice(1, data.name.length)
-        )
-          .split('-')
-          .join(' ');
-        pokemon.moveSet.push(data);
+
+        if (data.power) {
+          console.log(data.power);
+          data.name = (
+            data.name.split('-')[0][0].toUpperCase() +
+            data.name.slice(1, data.name.length)
+          )
+            .split('-')
+            .join(' ');
+          pokemon.moveSet.push(data);
+        } else {
+          getAttack();
+        }
+
       } else {
         getAttack();
       }
