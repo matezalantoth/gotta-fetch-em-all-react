@@ -36,10 +36,11 @@ export const SelectedLocation = (props) => {
     return pokemonEncounters.length > 0 ? (
       <div className=' text-black'>
         <button
+          className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full mb-1 w-96 relative opacity-80'
           onClick={() => {
             setClickedLocation({ ...clickedLocation, clicked: false });
           }}>
-          Leave
+          Return to the cities 🏙️
         </button>
         <MyPokemons
           setPokemons={setPokemons}
@@ -51,10 +52,11 @@ export const SelectedLocation = (props) => {
     ) : (
       <div className=' text-black'>
         <button
+          className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full mb-1 w-96 relative opacity-80'
           onClick={() => {
             setClickedLocation({ ...clickedLocation, clicked: false });
           }}>
-          Leave
+          Return to the cities 🏙️
         </button>
         <h2>There does not appear to be any pokemon here</h2>
       </div>
