@@ -30,7 +30,7 @@ export const BattleEncounter = (props) => {
     return Math.floor(
       ((((2 / 5 + 2) * B * 60) / D / 50 + 2) *
         Math.floor(Math.random() * (255 - 217) + 217)) /
-        255,
+        255
     );
   };
 
@@ -40,7 +40,7 @@ export const BattleEncounter = (props) => {
         Math.floor(Math.random() * attack.accuracy) > 10
           ? Math.floor(
               calcDamage(selectedPokemon.dmg, enemyPokemon.def) +
-                attack.power / 4,
+                attack.power / 4
             )
           : 0;
       setEnemyPokemon({ ...enemyPokemon, hp: enemyPokemon.hp - damageDone });
@@ -61,12 +61,12 @@ export const BattleEncounter = (props) => {
             ? Math.floor(
                 (calcDamage(enemyPokemon.dmg, selectedPokemon.def) +
                   enemyAttack.power) /
-                  4,
+                  4
               )
             : 0;
       } else {
         damageDone = Math.floor(
-          calcDamage(enemyPokemon.dmg, selectedPokemon.def) * 2,
+          calcDamage(enemyPokemon.dmg, selectedPokemon.def) * 2
         );
       }
       setSelectedPokemon({
@@ -83,7 +83,7 @@ export const BattleEncounter = (props) => {
   useEffect(() => {
     if (document.getElementById('damageText')) {
       document.getElementById(
-        'damageText',
+        'damageText'
       ).innerText = `${enemyPokemon.name} dealt ${damageTaken}DMG!`;
 
       document.getElementById('damageTakenIndicator').hidden = false;
@@ -108,9 +108,9 @@ export const BattleEncounter = (props) => {
   useEffect(() => {
     if (document.getElementById('damageText')) {
       document.getElementById(
-        'damageText',
+        'damageText'
       ).innerText = `${selectedPokemon.name} has dealt ${damageDealt}DMG!`;
-      document.getElementById('damageDealtIndicator').hidden = false;
+      // document.getElementById('damageDealtIndicator').hidden = false;
     }
 
     if (document.getElementById('enemyPokemonImage')) {
@@ -118,7 +118,7 @@ export const BattleEncounter = (props) => {
         .getElementById('enemyPokemonImage')
         .classList.add('animate-shake');
       setTimeout(() => {
-        document.getElementById('damageDealtIndicator').hidden = true;
+        // document.getElementById('damageDealtIndicator').hidden = true;
         setPlayerTurn(false);
         document
           .getElementById('enemyPokemonImage')
@@ -153,8 +153,7 @@ export const BattleEncounter = (props) => {
       <button
         onClick={() => {
           setBattleBegun(true);
-        }}
-      >
+        }}>
         Begin battle!
       </button>
     );
