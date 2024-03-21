@@ -6,7 +6,7 @@ export const usePokemons = () => {
   const [pokemons, setPokemons] = useState([]);
 
   const usersPokemon = [
-    'https://pokeapi.co/api/v2/pokemon/bulbasaur',
+    'https://pokeapi.co/api/v2/pokemon/mewtwo',
     'https://pokeapi.co/api/v2/pokemon/charizard',
     'https://pokeapi.co/api/v2/pokemon/xerneas',
   ];
@@ -63,5 +63,5 @@ export const usePokemons = () => {
     });
   }, [pokemons]);
 
-  return { pokemons };
+  return { pokemons, setPokemons };
 };

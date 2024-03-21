@@ -9,7 +9,7 @@ export const Locations = () => {
     name: null,
     clicked: false,
   });
-  const { pokemons } = usePokemons();
+  const { pokemons, setPokemons } = usePokemons();
 
   useEffect(() => {
     async function fetchData() {
@@ -32,6 +32,7 @@ export const Locations = () => {
         clickedLocation.clicked ? (
           <SelectedLocation
             pokemons={pokemons}
+            setPokemons={setPokemons}
             clickedLocation={clickedLocation}
             setClickedLocation={setClickedLocation}
             click={true}
@@ -58,8 +59,7 @@ export const Locations = () => {
                       name: item.name,
                       clicked: true,
                     });
-                  }}
-                >
+                  }}>
                   {firstWord + ' ' + secondWord}
                 </li>
               );
