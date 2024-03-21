@@ -35,9 +35,11 @@ export const BattleEncounter = (props) => {
   };
 
   const handleAttack = (attack) => {
+    console.log(attack);
     if (enemyPokemon && attack) {
       const damageDone =
-        (calcDamage(selectedPokemon.dmg, enemyPokemon.def) + attack.power) / 2;
+        calcDamage(selectedPokemon.dmg, enemyPokemon.def) +
+        (attack.power ? attack.power : 0);
       setEnemyPokemon({ ...enemyPokemon, hp: enemyPokemon.hp - damageDone });
       setDamageDealt(damageDone);
     }
@@ -46,6 +48,7 @@ export const BattleEncounter = (props) => {
   const handleEnemyAttack = () => {
     if (enemyPokemon) {
       const damageDone = calcDamage(enemyPokemon.dmg, selectedPokemon.def);
+
       setSelectedPokemon({
         ...selectedPokemon,
         hp: selectedPokemon.hp - damageDone,
@@ -207,7 +210,8 @@ export const BattleEncounter = (props) => {
         <p>YOU HAVE WON YIPPI WOULD U LIKE TO CATCH THE POKEMON ? smileyface</p>
         <button
           onClick={() => {
-            setPokemons(...pokemons, enemyPokemon);
+            pokemons.push(enemyPokemon);
+            setClickedLocation({ url: null, name: null, clicked: false });
           }}>
           Catch the defated pokemon
         </button>
