@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Attacks } from './Attacks';
+import { EndScreenRenderer } from './EndScreenRenderer';
+import { BattleRenderer } from './BattleRenderer';
 
 export const BattleEncounter = (props) => {
   const {
@@ -29,7 +30,7 @@ export const BattleEncounter = (props) => {
     return Math.floor(
       ((((2 / 5 + 2) * B * 60) / D / 50 + 2) *
         Math.floor(Math.random() * (255 - 217) + 217)) /
-        255
+        255,
     );
   };
 
@@ -39,7 +40,7 @@ export const BattleEncounter = (props) => {
         Math.floor(Math.random() * attack.accuracy) > 10
           ? Math.floor(
               calcDamage(selectedPokemon.dmg, enemyPokemon.def) +
-                attack.power / 4
+                attack.power / 4,
             )
           : 0;
       setEnemyPokemon({ ...enemyPokemon, hp: enemyPokemon.hp - damageDone });
@@ -60,12 +61,12 @@ export const BattleEncounter = (props) => {
             ? Math.floor(
                 (calcDamage(enemyPokemon.dmg, selectedPokemon.def) +
                   enemyAttack.power) /
-                  4
+                  4,
               )
             : 0;
       } else {
         damageDone = Math.floor(
-          calcDamage(enemyPokemon.dmg, selectedPokemon.def) * 2
+          calcDamage(enemyPokemon.dmg, selectedPokemon.def) * 2,
         );
       }
       setSelectedPokemon({
@@ -82,7 +83,7 @@ export const BattleEncounter = (props) => {
   useEffect(() => {
     if (document.getElementById('damageText')) {
       document.getElementById(
-        'damageText'
+        'damageText',
       ).innerText = `${enemyPokemon.name} dealt ${damageTaken}DMG!`;
 
       document.getElementById('damageTakenIndicator').hidden = false;
@@ -107,7 +108,7 @@ export const BattleEncounter = (props) => {
   useEffect(() => {
     if (document.getElementById('damageText')) {
       document.getElementById(
-        'damageText'
+        'damageText',
       ).innerText = `${selectedPokemon.name} has dealt ${damageDealt}DMG!`;
       document.getElementById('damageDealtIndicator').hidden = false;
     }
@@ -129,155 +130,29 @@ export const BattleEncounter = (props) => {
   if (selectedPokemon && enemyPokemon && battleBegun) {
     return !isPokemonDead.playerPokemonDead &&
       !isPokemonDead.enemyPokemonDead ? (
-      <div>
-        <div className='inline-flex pt-11'>
-          <div id='selectedPokemon'>
-            <div className='mt-5'>
-              {selectedPokemon.name}{' '}
-              <div className='inline-flex'>
-                <p
-                  className={
-                    (selectedPokemon.hp > 60
-                      ? 'text-green-600'
-                      : selectedPokemon.hp > 30
-                      ? 'text-yellow-300'
-                      : 'text-red-600') +
-                    ' bg-slate-800 rounded-xl w-10 relative m-auto'
-                  }>
-                  {selectedPokemon.hp}
-                </p>
-                <p
-                  id='damageTakenIndicator'
-                  className={
-                    (damageTaken > 35
-                      ? 'text-red-900'
-                      : damageTaken > 15
-                      ? 'text-yellow-300'
-                      : 'text-blue-600') + ' ml-12 fixed animate-shake'
-                  }
-                  hidden>
-                  -{damageTaken}
-                </p>
-              </div>
-              <img
-                id='selectedPokemonImage'
-                className='items-center m-auto scale-115 '
-                src={
-                  selectedPokemon.sprites['other']['showdown']['back_default']
-                }
-              />
-            </div>
-            {
-              <div>
-                <Attacks
-                  selectedPokemon={selectedPokemon}
-                  damageTaken={damageTaken}
-                  damageDealt={damageDealt}
-                  handleAttack={handleAttack}
-                  playerTurn={playerTurn}
-                  handleEnemyAttack={handleEnemyAttack}
-                />
-              </div>
-            }
-          </div>
-
-          <div className='text-black relative mb-20'>
-            {enemyPokemon.name}{' '}
-            <div className='inline-flex'>
-              <p
-                className={
-                  (enemyPokemon.hp > 60
-                    ? 'text-green-600'
-                    : enemyPokemon.hp > 30
-                    ? 'text-yellow-300'
-                    : 'text-red-600') +
-                  ' bg-slate-800 rounded-xl w-10 relative m-auto'
-                }>
-                {enemyPokemon.hp}
-              </p>
-              <p
-                id='damageDealtIndicator'
-                className={
-                  (damageDealt > 35
-                    ? 'text-red-900'
-                    : damageDealt > 15
-                    ? 'text-yellow-300'
-                    : 'text-blue-600') + ' ml-12 animate-shake fixed'
-                }
-                hidden>
-                -{damageDealt}
-              </p>
-            </div>
-            <img
-              id='enemyPokemonImage'
-              className='m-auto scale-115'
-              src={enemyPokemon.sprites['other']['showdown']['front_default']}
-            />
-          </div>
-        </div>
-      </div>
-    ) : isPokemonDead.playerPokemonDead ? (
-      <div>
-        <p className='text-white font-bold'>YOUR POKEMON IS DEAD 💀💀</p>
-
-        <button
-          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-1 w-96 relative opacity-80'
-          onClick={() => {
-            setClickedLocation({ url: null, name: null, clicked: false });
-          }}>
-          Return to the cities
-        </button>
-      </div>
+      <BattleRenderer
+        selectedPokemon={selectedPokemon}
+        damageTaken={damageTaken}
+        handleAttack={handleAttack}
+        playerTurn={playerTurn}
+        handleEnemyAttack={handleEnemyAttack}
+      />
     ) : (
-      <div>
-        <p className='  text-white font-bold '>YOU HAVE WON YIPPI 🏆🏆🔥🔥 </p>
-        <button
-          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-1 w-96 relative opacity-80'
-          onClick={() => {
-            pokemons.push(enemyPokemon);
-            setClickedLocation({ url: null, name: null, clicked: false });
-          }}>
-          Catch the defated pokemon 🔴
-        </button>
-        <div className='text-black relative mb-20'>
-          {enemyPokemon.name}
-          {' is dead'}
-          <div className='inline-flex'>
-            <p>💀💀</p>
-            <p
-              id='damageDealtIndicator'
-              className={
-                (damageDealt > 35
-                  ? 'text-red-900'
-                  : damageDealt > 15
-                  ? 'text-yellow-300'
-                  : 'text-blue-600') + ' ml-12 animate-shake fixed'
-              }
-              hidden>
-              -{damageDealt}
-            </p>
-          </div>
-          <img
-            id='enemyPokemonImage'
-            className='m-auto scale-115'
-            src={enemyPokemon.sprites['other']['showdown']['front_default']}
-          />
-        </div>
-        <button
-          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-1 w-96 relative opacity-80'
-          onClick={() => {
-            setClickedLocation({ url: null, name: null, clicked: false });
-          }}>
-          Return to the cities 🏙️
-        </button>
-      </div>
+      <EndScreenRenderer
+        isPokemonDead={isPokemonDead}
+        setClickedLocation={setClickedLocation}
+        pokemons={pokemons}
+        enemyPokemon={enemyPokemon}
+        damageDealt={damageDealt}
+      />
     );
   } else {
     return (
       <button
         onClick={() => {
           setBattleBegun(true);
-        }}>
+        }}
+      >
         Begin battle!
       </button>
     );
