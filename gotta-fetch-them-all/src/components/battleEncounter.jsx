@@ -4,7 +4,6 @@ import { Attacks } from './Attacks';
 export const BattleEncounter = (props) => {
   const {
     pokemons,
-    setPokemons,
     selectedPokemon,
     enemyPokemon,
     setClickedLocation,
@@ -18,6 +17,7 @@ export const BattleEncounter = (props) => {
   const isPokemonDead = { playerPokemonDead: false, enemyPokemonDead: false };
 
   if (selectedPokemon && enemyPokemon) {
+    console.log(enemyPokemon);
     if (selectedPokemon.hp <= 0) {
       isPokemonDead.playerPokemonDead = true;
     }
@@ -30,16 +30,16 @@ export const BattleEncounter = (props) => {
     return Math.floor(
       ((((2 / 5 + 2) * B * 60) / D / 50 + 2) *
         Math.floor(Math.random() * (255 - 217) + 217)) /
-        255
+        255,
     );
   };
 
   const handleAttack = (attack) => {
-    console.log(attack);
     if (enemyPokemon && attack) {
-      const damageDone =
+      const damageDone = Math.floor(
         calcDamage(selectedPokemon.dmg, enemyPokemon.def) +
-        (attack.power ? attack.power : 0);
+          (attack.power ? attack.power : 0) / 4,
+      );
       setEnemyPokemon({ ...enemyPokemon, hp: enemyPokemon.hp - damageDone });
       setDamageDealt(damageDone);
     }
@@ -47,7 +47,15 @@ export const BattleEncounter = (props) => {
 
   const handleEnemyAttack = () => {
     if (enemyPokemon) {
-      const damageDone = calcDamage(enemyPokemon.dmg, selectedPokemon.def);
+      const enemyAttack =
+        enemyPokemon.moveSet[
+          Math.floor(Math.random() * enemyPokemon.moveSet.length)
+        ];
+      const damageDone = Math.floor(
+        (calcDamage(enemyPokemon.dmg, selectedPokemon.def) +
+          (enemyAttack ? enemyAttack.power : 0)) /
+          4,
+      );
 
       setSelectedPokemon({
         ...selectedPokemon,
@@ -63,7 +71,7 @@ export const BattleEncounter = (props) => {
   useEffect(() => {
     if (document.getElementById('damageText')) {
       document.getElementById(
-        'damageText'
+        'damageText',
       ).innerText = `${enemyPokemon.name} dealt ${damageTaken}DMG!`;
 
       document.getElementById('damageTakenIndicator').hidden = false;
@@ -88,7 +96,7 @@ export const BattleEncounter = (props) => {
   useEffect(() => {
     if (document.getElementById('damageText')) {
       document.getElementById(
-        'damageText'
+        'damageText',
       ).innerText = `${selectedPokemon.name} has dealt ${damageDealt}DMG!`;
       document.getElementById('damageDealtIndicator').hidden = false;
     }
@@ -124,16 +132,21 @@ export const BattleEncounter = (props) => {
                       ? 'text-yellow-300'
                       : 'text-red-600') +
                     ' bg-slate-800 rounded-xl w-10 relative m-auto'
-                  }>
+                  }
+                >
                   {selectedPokemon.hp}
                 </p>
                 <p
                   id='damageTakenIndicator'
                   className={
-                    (damageTaken > 35 ? 'text-red-900' : 'text-yellow-300') +
-                    ' ml-12 fixed animate-shake'
+                    (damageTaken > 35
+                      ? 'text-red-900'
+                      : damageTaken > 15
+                      ? 'text-yellow-300'
+                      : 'text-blue-600') + ' ml-12 fixed animate-shake'
                   }
-                  hidden>
+                  hidden
+                >
                   -{damageTaken}
                 </p>
               </div>
@@ -170,7 +183,8 @@ export const BattleEncounter = (props) => {
                     ? 'text-yellow-300'
                     : 'text-red-600') +
                   ' bg-slate-800 rounded-xl w-10 relative m-auto'
-                }>
+                }
+              >
                 {enemyPokemon.hp}
               </p>
               <p
@@ -180,9 +194,10 @@ export const BattleEncounter = (props) => {
                     ? 'text-red-900'
                     : damageDealt > 15
                     ? 'text-yellow-300'
-                    : 'text-green-600') + ' ml-12 animate-shake fixed'
+                    : 'text-blue-600') + ' ml-12 animate-shake fixed'
                 }
-                hidden>
+                hidden
+              >
                 -{damageDealt}
               </p>
             </div>
@@ -201,7 +216,8 @@ export const BattleEncounter = (props) => {
         <button
           onClick={() => {
             setClickedLocation({ url: null, name: null, clicked: false });
-          }}>
+          }}
+        >
           Return to the cities
         </button>
       </div>
@@ -212,13 +228,15 @@ export const BattleEncounter = (props) => {
           onClick={() => {
             pokemons.push(enemyPokemon);
             setClickedLocation({ url: null, name: null, clicked: false });
-          }}>
+          }}
+        >
           Catch the defated pokemon
         </button>
         <button
           onClick={() => {
             setClickedLocation({ url: null, name: null, clicked: false });
-          }}>
+          }}
+        >
           Return to the cities
         </button>
       </div>
@@ -228,7 +246,8 @@ export const BattleEncounter = (props) => {
       <button
         onClick={() => {
           setBattleBegun(true);
-        }}>
+        }}
+      >
         Begin battle!
       </button>
     );
