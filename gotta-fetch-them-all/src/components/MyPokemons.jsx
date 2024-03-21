@@ -27,7 +27,7 @@ export const MyPokemons = (props) => {
   return (
     <div className='relative top-72'>
       {selectedPokemon ? (
-        <div className=' text-white font-bold py-2 px-4 rounded-full mb-1 relative '>
+        <div className=' text-black font-bold py-2 px-4 rounded-full mb-1 relative '>
           <BattleEncounter
             enemyPokemon={enemyPokemon}
             selectedPokemon={selectedPokemon}
@@ -63,7 +63,7 @@ export const MyPokemons = (props) => {
                       def: pokemon.stats[2]['base_stat'],
                     });
                   }}
-                  className='transition ease-in delay-75 hover:scale-110 text-white font-bold mb-1 py-2  items-center justify-items-center'
+                  className='transition ease-in delay-75 hover:scale-110 text-black font-bold mb-1 py-2  items-center justify-items-center'
                 >
                   <p>{pokemon.name}</p>
                   <img src={pokemon.sprites['front_default']} />

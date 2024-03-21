@@ -33,7 +33,7 @@ export const SelectedLocation = (props) => {
     }
 
     return pokemonEncounters.length > 0 ? (
-      <div className=' text-white'>
+      <div className=' text-black'>
         <button
           onClick={() => {
             setClickedLocation({ ...clickedLocation, clicked: false });
@@ -48,7 +48,7 @@ export const SelectedLocation = (props) => {
         />
       </div>
     ) : (
-      <div className=' text-white'>
+      <div className=' text-black'>
         <button
           onClick={() => {
             setClickedLocation({ ...clickedLocation, clicked: false });
@@ -60,5 +60,5 @@ export const SelectedLocation = (props) => {
       </div>
     );
   }
-  return <h2 className=' text-white'>Loading...</h2>;
+  return <h2 className=' text-black'>Loading...</h2>;
 };
