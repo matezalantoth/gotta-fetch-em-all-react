@@ -7,8 +7,10 @@ export const usePokemons = () => {
 
   const usersPokemon = [
     'https://pokeapi.co/api/v2/pokemon/mewtwo',
-    'https://pokeapi.co/api/v2/pokemon/charizard',
-    'https://pokeapi.co/api/v2/pokemon/xerneas',
+    'https://pokeapi.co/api/v2/pokemon/squirtle',
+    'https://pokeapi.co/api/v2/pokemon/charmander',
+    'https://pokeapi.co/api/v2/pokemon/bulbasaur',
+    'https://pokeapi.co/api/v2/pokemon/pikachu',
   ];
 
   useEffect(() => {
@@ -24,18 +26,14 @@ export const usePokemons = () => {
         pokemon.moveSet = [];
         for (let i = 0; i < 5; i++) {
           await getAttack(pokemon);
-
         }
         return pokemon;
       });
       const finalPokemons = await Promise.all(promisedPokemons);
-      console.log('done');
-      console.log(finalPokemons);
       return await Promise.all(finalPokemons);
     };
     const handlePokemons = async () => {
       setPokemons(await fetchPokemonsData());
-      console.log('set');
     };
 
     handlePokemons();
@@ -50,9 +48,7 @@ export const usePokemons = () => {
         const response = await fetch(potentialAttack.url);
         const data = await response.json();
 
-
         if (data.power) {
-          console.log(data.power);
           data.name = (
             data.name.split('-')[0][0].toUpperCase() +
             data.name.slice(1, data.name.length)
@@ -63,7 +59,6 @@ export const usePokemons = () => {
         } else {
           getAttack();
         }
-
       } else {
         getAttack();
       }

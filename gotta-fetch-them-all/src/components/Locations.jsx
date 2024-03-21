@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { SelectedLocation } from './SelectedLocation';
 import { usePokemons } from './usePokemons';
+import pokemon_logo from '../assets/pokemon_logo.jpg';
 
 export const Locations = () => {
   const [data, setData] = useState(null);
@@ -10,7 +11,6 @@ export const Locations = () => {
     clicked: false,
   });
   const { pokemons, setPokemons } = usePokemons();
-  console.log(pokemons);
 
   useEffect(() => {
     async function fetchData() {
@@ -39,34 +39,39 @@ export const Locations = () => {
             click={true}
           />
         ) : (
-          <ul className='relative'>
-            <img src='../assets/pokemonLogo.jpg' alt='Picture not found' />
-            {data.map((item, i) => {
-              const nameSplitOnSpace = item.name.split('-');
-              const firstWord =
-                nameSplitOnSpace[0].split('')[0].toUpperCase() +
-                nameSplitOnSpace[0].slice(1, nameSplitOnSpace[0].length);
-              const secondWord =
-                nameSplitOnSpace[1].split('')[0].toUpperCase() +
-                nameSplitOnSpace[1].slice(1, nameSplitOnSpace[1].length);
+          <div>
+            <img
+              className='scale-[0.3] absolute'
+              src={pokemon_logo}
+              alt='Logo'
+            />
+            <ul className='relative'>
+              {data.map((item, i) => {
+                const nameSplitOnSpace = item.name.split('-');
+                const firstWord =
+                  nameSplitOnSpace[0].split('')[0].toUpperCase() +
+                  nameSplitOnSpace[0].slice(1, nameSplitOnSpace[0].length);
+                const secondWord =
+                  nameSplitOnSpace[1].split('')[0].toUpperCase() +
+                  nameSplitOnSpace[1].slice(1, nameSplitOnSpace[1].length);
 
-              return (
-                <li
-                  key={i}
-                  className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-1 w-96 relative opacity-80'
-                  onClick={() => {
-                    setClickedLocation({
-                      url: item.url,
-                      name: item.name,
-                      clicked: true,
-                    });
-                  }}
-                >
-                  {firstWord + ' ' + secondWord}
-                </li>
-              );
-            })}
-          </ul>
+                return (
+                  <li
+                    key={i}
+                    className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-1 w-96 relative opacity-80'
+                    onClick={() => {
+                      setClickedLocation({
+                        url: item.url,
+                        name: item.name,
+                        clicked: true,
+                      });
+                    }}>
+                    {firstWord + ' ' + secondWord}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         )
       ) : (
         <p>Loading...</p>

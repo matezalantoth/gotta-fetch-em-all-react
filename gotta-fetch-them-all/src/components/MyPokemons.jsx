@@ -12,9 +12,7 @@ export const MyPokemons = (props) => {
     const fetchEnemyPokemonData = async () => {
       const response = await fetch(url);
       const data = await response.json();
-      for (let i = 0; i < 5; i++) {
-        console.log(data.moves[Math.floor(Math.random() * data.moves.length)]);
-      }
+
       data.moveSet = [];
       const getAttack = async (pokemon) => {
         if (pokemon) {
@@ -27,7 +25,6 @@ export const MyPokemons = (props) => {
             const data = await response.json();
 
             if (data.power) {
-              console.log(data.power);
               data.name = (
                 data.name.split('-')[0][0].toUpperCase() +
                 data.name.slice(1, data.name.length)
@@ -107,8 +104,7 @@ export const MyPokemons = (props) => {
                         : pokemon.stats[2]['base_stat'],
                     });
                   }}
-                  className='transition ease-in delay-75 hover:scale-110 text-black font-bold mb-1 py-2  items-center justify-items-center'
-                >
+                  className='transition ease-in delay-75 hover:scale-110 text-black font-bold mb-1 py-2  items-center justify-items-center'>
                   <p>{pokemon.name}</p>
                   <img src={pokemon.sprites['front_default']} />
                 </div>
