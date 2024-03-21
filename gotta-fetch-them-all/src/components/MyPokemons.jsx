@@ -33,14 +33,14 @@ export const MyPokemons = (props) => {
                 .join(' ');
               pokemon.moveSet.push(data);
             } else {
-              getAttack();
+              getAttack(pokemon);
             }
           } else {
-            getAttack();
+            getAttack(pokemon);
           }
         }
       };
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 4; i++) {
         getAttack(data);
       }
 

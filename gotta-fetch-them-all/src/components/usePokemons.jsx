@@ -24,7 +24,7 @@ export const usePokemons = () => {
 
       const promisedPokemons = tempPokemons.map(async (pokemon) => {
         pokemon.moveSet = [];
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 4; i++) {
           await getAttack(pokemon);
         }
         return pokemon;
@@ -43,6 +43,7 @@ export const usePokemons = () => {
     if (pokemon) {
       const potentialAttack =
         pokemon.moves[Math.floor(Math.random() * pokemon.moves.length)].move;
+
       if (!usedURLs.includes(potentialAttack.url)) {
         usedURLs.push(potentialAttack.url);
         const response = await fetch(potentialAttack.url);
@@ -57,10 +58,10 @@ export const usePokemons = () => {
             .join(' ');
           pokemon.moveSet.push(data);
         } else {
-          getAttack();
+          getAttack(pokemon);
         }
       } else {
-        getAttack();
+        getAttack(pokemon);
       }
     }
   };
