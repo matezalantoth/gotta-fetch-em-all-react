@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { EndScreenRenderer } from './EndScreenRenderer';
 import { BattleRenderer } from './BattleRenderer';
+import { StatReadout } from './StatReadout';
 
 export const BattleEncounter = (props) => {
   const {
@@ -11,7 +12,7 @@ export const BattleEncounter = (props) => {
     setEnemyPokemon,
     setSelectedPokemon,
   } = props;
-  const [playerTurn, setPlayerTurn] = useState(false);
+  const [playerTurn, setPlayerTurn] = useState(true);
   const [damageTaken, setDamageTaken] = useState(null);
   const [damageDealt, setDamageDealt] = useState(null);
   const [battleBegun, setBattleBegun] = useState(false);
@@ -33,6 +34,13 @@ export const BattleEncounter = (props) => {
         255,
     );
   };
+
+  const health = Math.floor(
+    (selectedPokemon.hp / selectedPokemon.uneditedHP) * 100,
+  );
+  const enemyHealth = Math.floor(
+    (enemyPokemon.hp / enemyPokemon.uneditedHP) * 100,
+  );
 
   const handleAttack = (attack) => {
     if (enemyPokemon && attack) {
@@ -81,21 +89,12 @@ export const BattleEncounter = (props) => {
   };
 
   useEffect(() => {
-    if (document.getElementById('damageText')) {
-      document.getElementById(
-        'damageText',
-      ).innerText = `${enemyPokemon.name} dealt ${damageTaken}DMG!`;
-
-      document.getElementById('damageTakenIndicator').hidden = false;
-    }
-
     if (document.getElementById('selectedPokemonImage')) {
       document
         .getElementById('selectedPokemonImage')
         .classList.add('animate-shake');
 
       setTimeout(() => {
-        document.getElementById('damageTakenIndicator').hidden = true;
         if (document.getElementById('selectedPokemonImage')) {
           document
             .getElementById('selectedPokemonImage')
@@ -106,23 +105,17 @@ export const BattleEncounter = (props) => {
   }, [selectedPokemon]);
 
   useEffect(() => {
-    if (document.getElementById('damageText')) {
-      document.getElementById(
-        'damageText',
-      ).innerText = `${selectedPokemon.name} has dealt ${damageDealt}DMG!`;
-      document.getElementById('damageDealtIndicator').hidden = false;
-    }
-
     if (document.getElementById('enemyPokemonImage')) {
       document
         .getElementById('enemyPokemonImage')
         .classList.add('animate-shake');
       setTimeout(() => {
-        document.getElementById('damageDealtIndicator').hidden = true;
         setPlayerTurn(false);
-        document
-          .getElementById('enemyPokemonImage')
-          .classList.remove('animate-shake');
+        if (document.getElementById('enemyPokemonImage')) {
+          document
+            .getElementById('enemyPokemonImage')
+            .classList.remove('animate-shake');
+        }
       }, 2000);
     }
   }, [enemyPokemon]);
@@ -130,15 +123,30 @@ export const BattleEncounter = (props) => {
   if (selectedPokemon && enemyPokemon && battleBegun) {
     return !isPokemonDead.playerPokemonDead &&
       !isPokemonDead.enemyPokemonDead ? (
-      <BattleRenderer
-        selectedPokemon={selectedPokemon}
-        damageTaken={damageTaken}
-        handleAttack={handleAttack}
-        playerTurn={playerTurn}
-        handleEnemyAttack={handleEnemyAttack}
-        enemyPokemon={enemyPokemon}
-        damageDealt={damageDealt}
-      />
+      <div>
+        <BattleRenderer
+          selectedPokemon={selectedPokemon}
+          damageTaken={damageTaken}
+          handleAttack={handleAttack}
+          playerTurn={playerTurn}
+          handleEnemyAttack={handleEnemyAttack}
+          enemyPokemon={enemyPokemon}
+          damageDealt={damageDealt}
+        />
+        <div className='relative float-left top-24 bg-slate-300 p-5 rounded-xl border-4 border-slate-500 '>
+          <StatReadout
+            whichPokemon={true}
+            selectedPokemon={selectedPokemon}
+            enemyPokemon={enemyPokemon}
+            health={health}
+            enemyHealth={enemyHealth}
+            damageTaken={damageTaken}
+            handleAttack={handleAttack}
+            playerTurn={playerTurn}
+            handleEnemyAttack={handleEnemyAttack}
+          />
+        </div>
+      </div>
     ) : (
       <EndScreenRenderer
         isPokemonDead={isPokemonDead}

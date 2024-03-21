@@ -28,6 +28,9 @@ export const MyPokemonsRenderer = (props) => {
                   def: pokemon.def
                     ? pokemon.def
                     : pokemon.stats[2]['base_stat'],
+                  uneditedHP: pokemon.uneditedHP
+                    ? pokemon.uneditedHP
+                    : pokemon.stats[0]['base_stat'],
                 });
               }}
               className='transition ease-in delay-75 hover:scale-110 text-black font-bold mb-1 py-2  items-center justify-items-center'
