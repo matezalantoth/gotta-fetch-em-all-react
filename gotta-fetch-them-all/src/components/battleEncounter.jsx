@@ -109,6 +109,7 @@ export const BattleEncounter = (props) => {
       document
         .getElementById('enemyPokemonImage')
         .classList.add('animate-shake');
+      console.log(document.getElementById('enemyPokemonImage').classList);
       setTimeout(() => {
         setPlayerTurn(false);
         if (document.getElementById('enemyPokemonImage')) {
@@ -133,7 +134,7 @@ export const BattleEncounter = (props) => {
           enemyPokemon={enemyPokemon}
           damageDealt={damageDealt}
         />
-        <div className='relative float-left top-24 bg-slate-300 p-5 rounded-xl border-4 border-slate-500 '>
+        <div className='fixed float-left bottom-6 bg-slate-300 p-5 rounded-xl border-4 border-slate-500 '>
           <StatReadout
             whichPokemon={true}
             selectedPokemon={selectedPokemon}

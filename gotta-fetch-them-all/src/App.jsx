@@ -10,7 +10,6 @@ function App() {
     clicked: false,
   });
   const { pokemons, setPokemons } = usePokemons();
-
   useEffect(() => {
     if (!clickedLocation.clicked) {
       document.querySelector('body').className =
