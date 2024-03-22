@@ -16,7 +16,7 @@ export const StatReadout = (props) => {
   return whichPokemon ? (
     <div>
       {selectedPokemon.name}{' '}
-      <div className='relative mb-1 m-auto w-100 bg-gray-200 rounded-full h-4 dark:bg-gray-700'>
+      <div className='relative mb-1 m-auto w-100 bg-gray-200 rounded-full h-4 dark:bg-gray-700  text-white'>
         <div
           className={
             'relative h-4 rounded-full ' +
@@ -43,22 +43,23 @@ export const StatReadout = (props) => {
       </div>
     </div>
   ) : (
-    <div>
+    <div className='relative mb-8'>
       {enemyPokemon.name}{' '}
       <div className='relative mb-1 m-auto w-[100px] bg-gray-200 rounded-full h-4 dark:bg-gray-700'>
         <div
           className={
             'relative h-4 rounded-full text-xs text-white block ' +
-            (health > 50
+            (enemyHealth > 50
               ? 'bg-red-600'
-              : health > 25
+              : enemyHealth > 25
               ? 'bg-yellow-300'
               : 'bg-green-500')
           }
           style={{ width: `${enemyHealth}%` }}
-        >
+        ></div>
+        <p className='relative bottom-4 float-right mr-2 text-xs text-white'>
           {enemyPokemon.hp}/{enemyPokemon.uneditedHP}
-        </div>
+        </p>
       </div>
     </div>
   );

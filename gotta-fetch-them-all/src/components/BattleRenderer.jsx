@@ -22,16 +22,16 @@ export const BattleRenderer = (props) => {
     <div>
       <div className='inline-flex pt-11'>
         <div id='selectedPokemon'>
-          <div className='mt-5'>
+          <div className='mt-5 relative right-full'>
             <img
               id='selectedPokemonImage'
-              className='items-center m-auto scale-115 '
+              className='relative top-20 transform scale-200'
               src={selectedPokemon.sprites['other']['showdown']['back_default']}
             />
           </div>
         </div>
 
-        <div className='text-black relative left-48 bottom-24'>
+        <div className='text-black relative bottom-24 left-12'>
           <StatReadout
             whichPokemon={false}
             selectedPokemon={selectedPokemon}
@@ -46,7 +46,7 @@ export const BattleRenderer = (props) => {
           />
           <img
             id='enemyPokemonImage'
-            className='scale-115 m-auto'
+            className='m-auto transform scale-200'
             src={enemyPokemon.sprites['other']['showdown']['front_default']}
           />
         </div>

@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  important: true,
   content: [
     './src/pages/**/*.{js,jsx,ts,tsx}',
     './src/sections/**/*.{js,jsx,ts,tsx}',
@@ -10,6 +9,9 @@ export default {
   ],
   theme: {
     extend: {
+      scale: {
+        '200': '2',
+      },
       backgroundImage: {
         locationsPage: "url('./src/assets/main.jpg')",
         battlePage: "url('./src/assets/battle.jpg')",
@@ -21,16 +23,16 @@ export default {
       keyframes: {
         'shake': {
           '10%, 90%': {
-            transform: 'translate3d(-1px, 0, 0)',
+            transform: 'translate(-2px, 0) scale(2)',
           },
           '20%, 80%': {
-            transform: 'translate3d(2px, 0, 0)',
+            transform: 'translate(4px, 0) scale(2)',
           },
           '30%, 50%, 70%': {
-            transform: 'translate3d(-4px, 0, 0)',
+            transform: 'translate(-8px, 0) scale(2)',
           },
           '40%, 60%': {
-            transform: 'translate3d(4px, 0, 0)',
+            transform: 'translate(8px, 0) scale(2)',
           },
         },
       },
